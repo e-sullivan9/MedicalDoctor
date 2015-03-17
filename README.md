@@ -73,7 +73,7 @@ Project Due Date: April 30, 2015(Thursday) by 4:30 P.M.
 
 Grade:  Program – 70%
 
-             Presentation – 30%
+Presentation – 30%
 
  
 
