@@ -135,18 +135,20 @@ public class NewAdmin extends javax.swing.JFrame {
               password +=pass1[i];              
         }
         for(int i = 0;i<pass1.length;i++){
-              password +=pass2[i];              
+              password2 +=pass2[i];              
         }
         
         
-        System.out.println(""+passwordPF.getPassword()+"   "+passwordPF2.getPassword());
+        System.out.println(""+password+"   "+password2);
         if(password.equals(password2)){
             try {
                         Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400"); //change password for it to work.
                         Statement stmt = con.createStatement();
                         
-                        stmt.executeUpdate("INSERT INTO Users VALUES('"+usernameTF.getText()+"','"+password+"','admin');");
+                        stmt.executeUpdate("INSERT INTO Users VALUES('"+usernameTF.getText()+"','"+password+"','Administrator');");
+                        dispose();
+                        new Login().setVisible(true);
             }
             catch(ClassNotFoundException e){
                 e.printStackTrace();

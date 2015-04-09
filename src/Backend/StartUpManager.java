@@ -26,13 +26,13 @@ public class StartUpManager {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400"); //change password for it to work.
-                    String sql = "select * from Users where Section = 'admin'";
+                    String sql = "select * from Users where Section = 'Administrator'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
                     
                     if(rs.next()){
                         System.out.println("There is One");
-                        
+                        new Login().setVisible(true);
                         //new Login().setVisible(true);
                     }
                     
