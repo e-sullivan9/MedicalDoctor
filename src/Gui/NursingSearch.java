@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package Gui;
-
+import Backend.*;
+import java.sql.*;
 /**
  *
  * @author jusji_000
@@ -41,27 +42,19 @@ public class NursingSearch extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Nursing");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"SSN", "Name", "First Name", "Last Name","DOB" }));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Search Patient");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Search Patient");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(new NonEditableTable()
+        );
+        String[] columns = {"SSN","First Name","Last Name","Address","Medical Insurance", "DOB","ZIP", "Gender","Next Visit"};
+        ((NonEditableTable) jTable1.getModel()).setColumnIdentifiers(columns);
         jTable1.setFillsViewportHeight(true);
         jScrollPane1.setViewportView(jTable1);
 
@@ -72,26 +65,32 @@ public class NursingSearch extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(228, 228, 228)))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(378, 378, 378)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(122, 122, 122)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2)
+                                    .addComponent(jButton1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 379, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel2)
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -102,15 +101,97 @@ public class NursingSearch extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int rows = jTable1.getRowCount();
+        for (int i = 0; i < rows; i++) {
+            ((javax.swing.table.DefaultTableModel) jTable1.getModel()).removeRow(0);
+        }
+        
+        // Gets the username from the text field
+        String query = jTextField1.getText();
+        
+        // Strings for the password and section from the database
+        String firstN = "";
+        String lastN = "";
+        String add = "";
+        String medInsur = "";
+        String dob = "";
+        String zip = "";
+        String gender = "";
+        String nextV = "";
+        
+        try {
+            
+            // Creates a connection to the database
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400");
+            Statement stmt = con.createStatement();
+            String sql="";
+            // SQL statement that returns all of the usernames that match the username entered in the text field
+            switch(jComboBox1.getSelectedIndex()){
+                case 0:
+                    sql = "SELECT * FROM Patients WHERE SSN LIKE '" + query + "%'";
+                    break;
+                case 1:
+                    String[] temp = query.split(" ");
+                    sql = "SELECT * FROM Patients WHERE (FirstName LIKE '" + temp[0] + "%' AND LastName LIKE '"+temp[1]+"%')";
+                    break;
+                case 2:
+                    sql = "SELECT * FROM Patients WHERE FirstName LIKE '" + query + "%'";
+                    break;
+                case 3:
+                    sql = "SELECT * FROM Patients WHERE LastName LIKE '" + query + "%'";
+                    break;
+                default:
+                    sql = "SELECT * FROM Patients WHERE DOB LIKE '%" + query + "%'";
+                    break;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            // Loop through all the results and add each to the table model
+            while (rs.next()) {
+                
+                // Data from the database for that result
+                query = rs.getString("SSN");
+                firstN = rs.getString("FirstName");
+                lastN = rs.getString("LastName");
+                add = rs.getString("Address");
+                medInsur = rs.getString("MedicalInsurance");
+                dob = rs.getString("DOB");
+                zip = rs.getString("zip");
+                gender = rs.getString("gender");
+                nextV =rs.getString("NextVisit");
+                
+                // Adds the data to the table model
+                ((javax.swing.table.DefaultTableModel) jTable1.getModel()).addRow(new Object[]{query, firstN, lastN, add, medInsur, dob, zip, gender, nextV});
+
+            }
+            
+            // Closes the connection to the database
+            rs.close();
+            stmt.close();
+            con.close();
+            
+        } catch (ClassNotFoundException e) {
+            
+        } catch (SQLException e) {
+            
+        }        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
