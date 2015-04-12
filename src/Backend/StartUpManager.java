@@ -25,7 +25,7 @@ public class StartUpManager {
             public void run() {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400"); //change password for it to work.
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n"); //change password for it to work.
                     String sql = "select * from Users where Section = 'Administrator'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
