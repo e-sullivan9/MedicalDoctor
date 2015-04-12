@@ -292,10 +292,20 @@ public class ManageUsers extends javax.swing.JFrame {
     
     /*
     * New User button action performed method.
-    * This method prompts the admin for a username, password twice, and a section
-    * The new user is saved into the database.
+    * This method opens the NewUser screen which allows the admin
+    * to create a new user by filling in the text fields and combo box.
     */
     private void newuserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newuserButtonActionPerformed
+
+        // Opens the NewUser screen
+        new NewUser(this);
+        
+        // newuserDialogBox();
+        
+    }//GEN-LAST:event_newuserButtonActionPerformed
+
+    // Creates a new user by prompting the admin with a series of dialog boxes
+    public void newuserDialogBox() {
         
         /*
         * First the admin is prompted to enter a username, which is then
@@ -538,8 +548,8 @@ public class ManageUsers extends javax.swing.JFrame {
            
         }
         
-    }//GEN-LAST:event_newuserButtonActionPerformed
-
+    }
+    
     /*
     * This method is called when the edit user button is clicked.
     * It allows the administrator to enter new information for the selected user.
@@ -598,38 +608,45 @@ public class ManageUsers extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "You must select a user to delete.", "Delete", JOptionPane.INFORMATION_MESSAGE);
             
         } else {
+            
+            // Confirm dialog box
+            int confirmResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + username + "?", "Confirm", JOptionPane.YES_NO_OPTION);
         
-            // Delete the user from the db
-            try {
+            if (confirmResult == JOptionPane.YES_OPTION) {
                 
-                // Connects to the database
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+                // Delete the user from the db
+                try {
 
-                // Inserts the user into the database
-                String sql = "DELETE FROM users WHERE Username='" + username + "'";
-                Statement stmt = con.createStatement();
-                stmt.executeUpdate(sql);
+                    // Connects to the database
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
 
-                // Closes the connection to the database
-                stmt.close();
-                con.close();
+                    // Inserts the user into the database
+                    String sql = "DELETE FROM users WHERE Username='" + username + "'";
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate(sql);
 
-                // New user added to db (message)
-                JOptionPane.showMessageDialog(null, "Successfully deleted " + username + " from the database.", "Delete Successful", JOptionPane.INFORMATION_MESSAGE);
+                    // Closes the connection to the database
+                    stmt.close();
+                    con.close();
 
-                // Update the table
-                update();
-                
-            } catch (ClassNotFoundException e) {
-                
-                // Prints the exception
-                System.out.println(e.getMessage());
-                
-            } catch (SQLException e) {
-                
-                // Prints the exception
-                System.out.println(e.getMessage());
+                    // New user added to db (message)
+                    JOptionPane.showMessageDialog(null, "Successfully deleted " + username + " from the database.", "Delete Successful", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Update the table
+                    update();
+
+                } catch (ClassNotFoundException e) {
+
+                    // Prints the exception
+                    System.out.println(e.getMessage());
+
+                } catch (SQLException e) {
+
+                    // Prints the exception
+                    System.out.println(e.getMessage());
+
+                }
                 
             }
                     
