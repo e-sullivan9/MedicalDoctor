@@ -119,7 +119,7 @@ public class Login extends JFrame {
         
             // Creates a connection to the database
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             
             // Selects the user from the database
             String sql = "SELECT * FROM users WHERE Username='" + usernameTextField.getText() + "';";
@@ -140,11 +140,6 @@ public class Login extends JFrame {
                 
                 // If the password entered matches the password from the ResultSet
                 if (password.equals(rs.getString("Password"))) {
-                    
-                    // Login successfull
-                    JOptionPane.showMessageDialog(null, "Login Successfull", "Login", JOptionPane.INFORMATION_MESSAGE); 
-                    
-                    System.out.println(rs.getString("Section"));
                     
                     // If the person logs in as an Administrator
                     if (rs.getString("Section").equals("Administrator")) {
