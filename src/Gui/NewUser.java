@@ -96,7 +96,7 @@ public class NewUser extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(124, Short.MAX_VALUE)
+                .addContainerGap(171, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(175, 175, 175))
             .addGroup(layout.createSequentialGroup()
