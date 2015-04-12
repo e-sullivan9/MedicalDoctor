@@ -134,7 +134,7 @@ public class NewAdmin extends javax.swing.JFrame {
         for(int i = 0;i<pass1.length;i++){
               password +=pass1[i];              
         }
-        for(int i = 0;i<pass1.length;i++){
+        for(int i = 0;i<pass2.length;i++){
               password2 +=pass2[i];              
         }
         
@@ -143,7 +143,7 @@ public class NewAdmin extends javax.swing.JFrame {
         if(password.equals(password2)){
             try {
                         Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400"); //change password for it to work.
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n"); //change password for it to work.
                         Statement stmt = con.createStatement();
                         
                         stmt.executeUpdate("INSERT INTO Users VALUES('"+usernameTF.getText()+"','"+password+"','Administrator');");

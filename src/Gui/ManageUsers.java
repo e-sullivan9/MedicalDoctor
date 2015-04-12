@@ -13,12 +13,20 @@ import java.sql.*;
 /**
  *
  * @author Samir
- * 4/8/15 9:00pm note: Working on making NEW USERS, EDIT USER, AND DELETE USER.
- * SEARCH USER is fully functional.
  */
 public class ManageUsers extends javax.swing.JFrame {
 
+    // Table model for the JTable
     private DefaultTableModel model;
+    
+    // String array for the available sections
+    private String[] sections = { "Administrator", "Registration", "Doctor", "Nursing" };
+
+    // ComboBox for the user to select a section
+    private JComboBox sectionComboBox = new JComboBox(sections);
+    
+    // Stores the username of the previous search (used when updating the table)
+    private String previousSearch;
     
     /**
      * Creates new form ManageUsers
@@ -42,8 +50,8 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         usernameTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        newuserButton = new javax.swing.JButton();
+        edituserButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -64,19 +72,29 @@ public class ManageUsers extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton2.setText("New User");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        newuserButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        newuserButton.setText("New User");
+        newuserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                newuserButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton3.setText("Edit User");
+        edituserButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        edituserButton.setText("Edit User");
+        edituserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edituserButtonActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton4.setText("Delete User");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         model = new DefaultTableModel();
         String[] columns = {"Username", "Password", "Section"};
@@ -91,25 +109,26 @@ public class ManageUsers extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(searchButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(newuserButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edituserButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4))
+                            .addComponent(jScrollPane1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
-                    .addComponent(jScrollPane1))
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel1)))
                 .addContainerGap(43, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(103, 103, 103))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,8 +145,8 @@ public class ManageUsers extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(newuserButton)
+                    .addComponent(edituserButton)
                     .addComponent(jButton4))
                 .addContainerGap(159, Short.MAX_VALUE))
         );
@@ -138,6 +157,13 @@ public class ManageUsers extends javax.swing.JFrame {
     // Search button action performed method
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
 
+        search();
+        
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    // Searches for users that match the text in the username text fields
+    public void search() {
+        
         /*
         * This method displays the username, password, and section of 
         * users from the database that match the text entered in the text field.
@@ -152,6 +178,9 @@ public class ManageUsers extends javax.swing.JFrame {
         // Gets the username from the text field
         String username = usernameTextField.getText();
         
+        // Saves the username so that we can update the table when needed
+        previousSearch = username;
+        
         // Strings for the password and section from the database
         String password = "";
         String section = "";
@@ -160,7 +189,7 @@ public class ManageUsers extends javax.swing.JFrame {
             
             // Creates a connection to the database
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
             
             // SQL statement that returns all of the usernames that match the username entered in the text field
@@ -185,20 +214,428 @@ public class ManageUsers extends javax.swing.JFrame {
             stmt.close();
             con.close();
             
+            // Selects the first row
+            if (jTable1.getRowCount() > 0) {
+                jTable1.setRowSelectionInterval(0, 0);
+            }
+            
         } catch (ClassNotFoundException e) {
             
         } catch (SQLException e) {
             
         }
         
-    }//GEN-LAST:event_searchButtonActionPerformed
-
-    // New User action performed method
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        String username = JOptionPane.showInputDialog("Enter a username", "New User: Username");
+    }
+    
+    // Searches for users that match the text in the username text fields
+    public void update() {
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        /*
+        * This method displays the username, password, and section of 
+        * users from the database that match the text entered in the text field.
+        */
+        
+        // Clears the table
+        int rows = model.getRowCount();
+        for (int i = 0; i < rows; i++) {
+            model.removeRow(0);
+        }
+        
+        // Gets the username from the text field
+        String username = previousSearch;
+        
+        // Strings for the password and section from the database
+        String password = "";
+        String section = "";
+        
+        try {
+            
+            // Creates a connection to the database
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            
+            // SQL statement that returns all of the usernames that match the username entered in the text field
+            String sql = "SELECT * FROM users WHERE Username LIKE '" + username + "%'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            // Loop through all the results and add each to the table model
+            while (rs.next()) {
+                
+                // Data from the database for that result
+                username = rs.getString("Username");
+                password = rs.getString("Password");
+                section = rs.getString("Section");
+                
+                // Adds the data to the table model
+                model.addRow(new Object[]{username, password, section});
+
+            }
+            
+            // Closes the connection to the database
+            rs.close();
+            stmt.close();
+            con.close();
+            
+            // Selects the first row
+            if (jTable1.getRowCount() > 0) {
+                jTable1.setRowSelectionInterval(0, 0);
+            }
+            
+        } catch (ClassNotFoundException e) {
+            
+        } catch (SQLException e) {
+            
+        }
+        
+    }
+    
+    /*
+    * New User button action performed method.
+    * This method prompts the admin for a username, password twice, and a section
+    * The new user is saved into the database.
+    */
+    private void newuserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newuserButtonActionPerformed
+        
+        /*
+        * First the admin is prompted to enter a username, which is then
+        * compared with the other usernames in the database.
+        * If there is already a username with that name then the user is 
+        * prompted to enter another username. Repeats until a valid username
+        * is entered or until the cancel button is pressed, which returns null.
+        *
+        * If the username is not null then the admin is prompted for a password.
+        *
+        * If the first password is not null then the admin is prompted to re-enter the password.
+        *
+        * If the second password is not null (which means that the user did not cancel),
+        * then the user is prompted to select which section this new user belongs to.
+        *
+        * If the section is not null, then the new user is added to the database.
+        */
+        
+        // If the username is already taken then this variable is true
+        boolean usernameInvalid = true;
+        
+        // String for the new username
+        String username = "";
+        
+        // Repeats until the username is valid or until the cancel button is pressed
+        while (usernameInvalid) {
+            
+            // Prompts the user to enter a username
+            username = JOptionPane.showInputDialog(null, "Enter a username", "New User: Username", JOptionPane.PLAIN_MESSAGE);
+            
+            // Sets the variable to false meaning the username is possibly valid
+            usernameInvalid = false;
+            
+            if (username != null) {
+      
+                // If the username is blank then set the variable to true (which means the username is invalid)
+                if (username.equals("")) {
+
+                    // Sets the username to invalid
+                    usernameInvalid = true;
+
+                    // Displays a message
+                    JOptionPane.showMessageDialog(null, "Username cannot be blank.", "Username", JOptionPane.ERROR_MESSAGE);
+
+                    // Sets the username to null
+                    username = null;
+                    
+                // Else if the username is not a blank string (""), then check if the username already exists
+                } else {
+
+                    /*
+                    * Selects all the users from the database and compares the entered username
+                    * If the username matches one in the database then the variable
+                    * usernameInvalid is set to true, which means the user will be prompted
+                    * to enter another username or to click cancel.
+                    */
+                    try {
+
+                        // Connects to the database
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+
+                        // Selects all of the users from the database
+                        String sql = "SELECT * FROM users";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+
+                        // Loops through all of the users from the database
+                        while (rs.next()) {
+
+                            // If the username matches any of the users in the database
+                            if (rs.getString(1).equals(username)) {
+
+                                // Set the varaible to true (means the username is invalid)
+                                usernameInvalid = true;
+
+                                // Display a message
+                                JOptionPane.showMessageDialog(null, "Username already exists.", "Username", JOptionPane.INFORMATION_MESSAGE);
+
+                                // Sets the username to null
+                                username = null;
+                                
+                            }
+
+                        }
+
+                        // Closes the connection to the database
+                        con.close();
+                        stmt.close();
+                        rs.close();
+
+                    } catch (ClassNotFoundException e) {
+
+                        // Prints the exception
+                        System.out.println(e.getMessage());
+
+                    } catch (SQLException e) {
+
+                        // Prints the exception
+                        System.out.println(e.getMessage());
+
+                    }
+
+                }
+                
+            }
+            
+        }
+        
+        // String for the first password
+        String password1 = null;
+        
+        // String for the second password
+        String password2 = null;
+        
+        // String for the section
+        String section = "";
+        
+        // If the password is blank then this is set to true
+        boolean passwordInvalid = true;
+        
+        // Checks if the username is null (meaning the user clicked cancel on new user screen prompt)
+        if (username != null) {
+            
+            // Repeats until a valid password is entered or until the user presses cancel
+            while (passwordInvalid) {
+                
+                // Sets the variable to false
+                passwordInvalid = false;
+                
+                // Gets a password from the user
+                password1 = JOptionPane.showInputDialog(null, "Enter a password", "New User: Password", JOptionPane.PLAIN_MESSAGE);
+
+                if (password1 != null) {
+
+                    // If the user enters a blank password
+                    if (password1.equals("")) {
+
+                        // Sets the password to invalid
+                        passwordInvalid = true;
+
+                        // Displays a message
+                        JOptionPane.showMessageDialog(null, "The password cannot be blank.", "Password", JOptionPane.INFORMATION_MESSAGE);
+
+                        // Sets the password to null
+                        password1 = null;
+
+                    }
+
+                }
+                     
+            }
+            
+        }
+        
+        // Sets the password to invalid so the user has to type a second password
+        passwordInvalid = true;
+        
+        // If the user did not press cancel on the first password screen
+        if (password1 != null) {
+            
+           // Repeat until the second password is valid
+           while (passwordInvalid) {
+               
+               // Sets the password to valid
+               passwordInvalid = false;
+               
+               // Gets the second password from the user
+               password2 = JOptionPane.showInputDialog(null, "Enter the password again", "New User: Password", JOptionPane.PLAIN_MESSAGE);
+               
+               // If the user did not click cancel (which returns a null value for password2)
+               if (password2 != null) {
+               
+                // If the two passwords do not match
+                if (!password2.equals(password1)) {
+
+                    // Sets the password to invalid
+                    passwordInvalid = true;
+
+                    // Display a message
+                    JOptionPane.showMessageDialog(null, "The password must match the first password.", "Password", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Sets the second password to null
+                    password2 = null;
+
+                }
+                
+               }
+               
+           }   
+
+        }
+        
+        // If the second password is not null meaning the user did not cancel
+        if (password2 != null) {
+            
+            // MessageBox for the user to pick which section the new user belongs to
+            JOptionPane.showMessageDialog(null, sectionComboBox, "New User: Section", JOptionPane.PLAIN_MESSAGE);
+
+            // Gets the selected item from the combo box
+            section = (String)sectionComboBox.getSelectedItem();
+
+            // Inssert the new user into the database
+             try {
+
+                // Connects to the database
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+
+                // Inserts the user into the database
+                String sql = "INSERT INTO users VALUES("
+                                                    + "'" + username + "', "
+                                                    + "'" + password1 + "', "
+                                                    + "'" + section + "'"
+                                                    + ")";
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate(sql);
+
+                // Closes the connection to the database
+                stmt.close();
+                con.close();
+
+                // New user added to db (message)
+                JOptionPane.showMessageDialog(null, "Successfully added " + username + " to the database.", "New User", JOptionPane.INFORMATION_MESSAGE);
+
+                // Updates the table
+                update();
+                
+             } catch (ClassNotFoundException e) {
+
+                 // Prints the exception
+                 System.out.println(e.getMessage());
+
+             } catch (SQLException e) {
+
+                 // Prints the exception
+                 System.out.println(e.getMessage());
+
+             }
+           
+        }
+        
+    }//GEN-LAST:event_newuserButtonActionPerformed
+
+    /*
+    * This method is called when the edit user button is clicked.
+    * It allows the administrator to enter new information for the selected user.
+    */
+    private void edituserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edituserButtonActionPerformed
+
+        // String for the username being edited
+        String username = "";
+        
+        // If there is at least 1 value in the JTable
+        if (model.getRowCount() > 0) {
+                    
+            // Get the username of the selected row
+            username = (String)model.getValueAt(jTable1.getSelectedRow(), 0);
+            
+        }
+        
+        // If no user is selected
+        if (username.equals("")) {
+            
+            // Display an error message
+            JOptionPane.showMessageDialog(null, "You must select a user to edit.", "Edit", JOptionPane.INFORMATION_MESSAGE);
+            
+        } else {
+        
+            // Open the edit user screen
+            new EditUser(this, username);
+                    
+        }
+        
+    }//GEN-LAST:event_edituserButtonActionPerformed
+
+    /*
+    * This method is called when the delete button is clicked.
+    * If there is an entry in the JTable that is currently selected,
+    * then that user is deleted from the database and then removed
+    * from the JTable. The JTable is updated automatically to reflect the changes.
+    */
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        // String for the username being deleted
+        String username = "";
+        
+        // If there is at least 1 value in the JTable
+        if (model.getRowCount() > 0) {
+                    
+            // Get the username of the selected row
+            username = (String)model.getValueAt(jTable1.getSelectedRow(), 0);
+            
+        }
+        
+        // If no user is selected
+        if (username.equals("")) {
+            
+            // Display an error message
+            JOptionPane.showMessageDialog(null, "You must select a user to delete.", "Delete", JOptionPane.INFORMATION_MESSAGE);
+            
+        } else {
+        
+            // Delete the user from the db
+            try {
+                
+                // Connects to the database
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+
+                // Inserts the user into the database
+                String sql = "DELETE FROM users WHERE Username='" + username + "'";
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate(sql);
+
+                // Closes the connection to the database
+                stmt.close();
+                con.close();
+
+                // New user added to db (message)
+                JOptionPane.showMessageDialog(null, "Successfully deleted " + username + " from the database.", "Delete Successful", JOptionPane.INFORMATION_MESSAGE);
+
+                // Update the table
+                update();
+                
+            } catch (ClassNotFoundException e) {
+                
+                // Prints the exception
+                System.out.println(e.getMessage());
+                
+            } catch (SQLException e) {
+                
+                // Prints the exception
+                System.out.println(e.getMessage());
+                
+            }
+                    
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,14 +673,14 @@ public class ManageUsers extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton edituserButton;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JButton searchButton;
+    private javax.swing.JButton newuserButton;
+    public javax.swing.JButton searchButton;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
 }
