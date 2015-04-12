@@ -8,6 +8,7 @@ package Backend;
 
 import Gui.*;
 import java.sql.*;
+import javax.swing.GroupLayout;
 
 /**
  * This class controls the start up of the medical doctor program. It detects if this is the first time start up, in which cause
@@ -35,7 +36,6 @@ public class StartUpManager {
                         new Login().setVisible(true);
                         //new Login().setVisible(true);
                     }
-                    
                     else 
                         new NewAdmin().setVisible(true);
                     con.close();
