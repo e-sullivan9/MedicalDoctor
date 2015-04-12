@@ -20,6 +20,7 @@ public class Registration extends javax.swing.JFrame {
      */
     public Registration() {
         initComponents();
+        setLocationRelativeTo(null);
         jButton1.addActionListener(new Handler());
         jButton2.addActionListener(new Handler2());
     }
@@ -91,9 +92,9 @@ public class Registration extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Address: ");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel6.setText("DOB: ");
+        jLabel6.setText("<html><div align='right'>DOB:&nbsp;<br>(YYYY-MM-DD)&nbsp;</p></div></html> ");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -103,9 +104,9 @@ public class Registration extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel8.setText("Insurance: ");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Follow-up: ");
+        jLabel9.setText("<html><div align='right'>Follow Up:&nbsp;<br>(YYYY-MM-DD)&nbsp;</p></div></html>");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -240,6 +241,9 @@ public class Registration extends javax.swing.JFrame {
             if(ssnTF.getText().isEmpty()){
                 error +="- SSN\n";
             }
+            if(!ssnTF.getText().isEmpty()&&!ssnTF.getText().matches("[0-9]{3}-[0-9]{2}-[0-9]{4}")){
+                error +="- SSN XXX-XX-XXXX\n";
+            }
             if(firstNameTF.getText().isEmpty()){
                 error +="- First Name\n";
             }
@@ -258,12 +262,16 @@ public class Registration extends javax.swing.JFrame {
             if(insuranceTF.getText().isEmpty()){
                 error +="- Insurance Information\n";
             }
-            if(zipTF.getText().isEmpty()){
-                error +="- ZIP Code\n";
-            }
             if(!followUpTF.getText().isEmpty()&&!followUpTF.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
                 error +="- Follow-Up must be YYYY-MM-DD\n";
             }
+            if(zipTF.getText().isEmpty()){
+                error +="- ZIP Code\n";
+            }
+            //ZIP should be in the format XXXXX or XXXXX-XXXX
+            if(!zipTF.getText().isEmpty()&&(!zipTF.getText().matches("[0-9]{5}")&&!zipTF.getText().matches("[0-9]{5}-[0-9]{4}"))){
+                error +="- ZIP Code (Check format)\n";
+            }  
             if(error.isEmpty()){
                 try {
             
