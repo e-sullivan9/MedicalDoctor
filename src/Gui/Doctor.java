@@ -17,6 +17,8 @@ public class Doctor extends javax.swing.JFrame {
      */
     public Doctor() {
         initComponents();
+        
+        setVisible(true);
     }
 
     /**

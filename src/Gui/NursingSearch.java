@@ -17,6 +17,8 @@ public class NursingSearch extends javax.swing.JFrame {
      */
     public NursingSearch() {
         initComponents();
+        
+        setVisible(true);
     }
 
     /**

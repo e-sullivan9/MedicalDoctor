@@ -73,7 +73,12 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jTable1.setFillsViewportHeight(true);
         jScrollPane1.setViewportView(jTable1);
 
-        jButton2.setText("Create Patient");
+        jButton2.setText("New Patient");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Edit Patient");
 
@@ -146,6 +151,10 @@ public class RegistrationSearch extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
  // <editor-fold defaultstate="collapsed" desc="ActionListener NEEDS COMMENTS"> 
     public class Handler implements ActionListener {
         public void actionPerformed(ActionEvent e){

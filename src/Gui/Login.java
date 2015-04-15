@@ -146,6 +146,24 @@ public class Login extends JFrame {
                         
                         // Open the Manage Users screen
                         ManageUsers manage = new ManageUsers();
+                     
+                    // Else if the person logs in as Registration
+                    } else if (rs.getString("Section").equals("Registration")) {
+                        
+                        // Open the RegistrationSearch screen
+                        RegistrationSearch registrationSearch = new RegistrationSearch();
+                     
+                    // Else if the person logs in as a Doctor
+                    } else if (rs.getString("Section").equals("Doctor")) {
+                        
+                        // Open the DoctorSearch screen
+                        Doctor doctorSearch = new Doctor();
+                     
+                    // Else if the user logs in as Nursing
+                    } else if (rs.getString("Section").equals("Nursing")) {
+                        
+                        // Opens the NursingSearch screen
+                        NursingSearch nursing = new NursingSearch();
                         
                     }
                
@@ -181,6 +199,10 @@ public class Login extends JFrame {
             System.out.println(e.getMessage());
             
         }
+        
+        // Clears the textfields
+        usernameTextField.setText("");
+        passwordField.setText("");
         
     }//GEN-LAST:event_loginButtonActionPerformed
 
