@@ -15,3 +15,19 @@ ZIP int(11) NOT NULL,
 Gender char(20) NOT NULL,
 NextVisit date NOT NULL,
 PRIMARY KEY(SSN));
+
+create table Visits(
+VID int(11) AUTO_INCREMENT,
+SSN varchar(11) NOT NULL,
+VisitDate date NOT NULL,
+ChiefComplaint char(100) NOT NULL,
+PresentIllness char(100) NOT NULL,
+PastHistory char(100) NOT NULL,
+ReviewOfTheSystem char(100) NOT NULL,
+PhysicalExam char(100) NOT NULL,
+Impression char(100) NOT NULL,
+DiagnosisByDoctor char(100) NOT NULL,
+NursingActivity char(100) NOT NULL,
+PRIMARY KEY(VID),
+FOREIGN KEY(SSN) REFERENCES Patients(SSN)
+);

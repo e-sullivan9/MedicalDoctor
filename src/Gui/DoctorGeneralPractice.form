@@ -31,11 +31,11 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jTextField1" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="chiefComplaintTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                  <Component id="jTextField3" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="physicalExamTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel4" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                  <Component id="jTextField2" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="pastHistoryTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jButton1" min="-2" pref="145" max="-2" attributes="0"/>
@@ -45,14 +45,14 @@
               </Group>
               <EmptySpace pref="117" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTextField7" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="diagnosisTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel8" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                  <Component id="jTextField4" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="presentIllnessTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                  <Component id="jTextField5" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
-                  <Component id="jLabel6" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                  <Component id="jTextField6" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="symptomsTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                  <Component id="impressionTextField" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                   <Component id="jLabel7" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
+                  <Component id="jLabel6" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="165" max="-2" attributes="0"/>
           </Group>
@@ -68,12 +68,12 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel2" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="chiefComplaintTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel5" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField4" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="presentIllnessTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -81,12 +81,12 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel3" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField2" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="pastHistoryTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel6" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField5" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="symptomsTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -94,12 +94,12 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel4" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField3" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="physicalExamTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel7" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField6" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="impressionTextField" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -107,10 +107,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jButton2" pref="33" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jButton1" max="32767" attributes="0"/>
-                      <Component id="jTextField7" pref="33" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jButton1" max="32767" attributes="0"/>
+                  <Component id="diagnosisTextField" pref="33" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="57" max="32767" attributes="0"/>
           </Group>
@@ -131,59 +129,65 @@
         <Property name="text" type="java.lang.String" value="Chief Complaint:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="chiefComplaintTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Past History:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="pastHistoryTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="text" type="java.lang.String" value="Physical Exam:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField3">
+    <Component class="javax.swing.JTextField" name="physicalExamTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="text" type="java.lang.String" value="Present Illness:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField4">
+    <Component class="javax.swing.JTextField" name="presentIllnessTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
         <Property name="text" type="java.lang.String" value="Subjective Symptoms:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
+    <Component class="javax.swing.JTextField" name="symptomsTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
         <Property name="text" type="java.lang.String" value="Impression:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField6">
+    <Component class="javax.swing.JTextField" name="impressionTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
         <Property name="text" type="java.lang.String" value="Diagnosis:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField7">
+    <Component class="javax.swing.JTextField" name="diagnosisTextField">
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save General Practice"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Laboratories"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

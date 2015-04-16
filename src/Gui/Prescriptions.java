@@ -16,6 +16,8 @@ public class Prescriptions extends javax.swing.JFrame {
      */
     public Prescriptions() {
         initComponents();
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**

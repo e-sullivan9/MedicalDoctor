@@ -16,6 +16,8 @@ public class Laboratories extends javax.swing.JFrame {
      */
     public Laboratories() {
         initComponents();
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**

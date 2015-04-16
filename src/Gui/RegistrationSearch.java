@@ -67,6 +67,11 @@ public class RegistrationSearch extends javax.swing.JFrame {
         });
 
         jButton1.setText("Search Patient");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new NonEditableTable());
         String[] columns = {"SSN","First Name","Last Name","Address","Medical Insurance", "DOB","ZIP", "Gender","Next Visit"};
@@ -165,6 +170,10 @@ public class RegistrationSearch extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
  // <editor-fold defaultstate="collapsed" desc="ActionListener NEEDS COMMENTS"> 
     public class Handler implements ActionListener {
         public void actionPerformed(ActionEvent e){
