@@ -4,20 +4,26 @@
  * and open the template in the editor.
  */
 package Gui;
+import java.sql.*;
+import javax.swing.*;
 
 /**
  *
  * @author jusji_000
  */
 public class Laboratories extends javax.swing.JFrame {
-
+    
+    private int vid;
+    private String patientSSN;
+    
     /**
      * Creates new form Laboratories
      */
-    public Laboratories() {
+    public Laboratories(String ssn) {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
+        patientSSN = ssn;
     }
 
     /**
@@ -200,6 +206,11 @@ public class Laboratories extends javax.swing.JFrame {
         );
 
         jButton1.setText("Save Orders");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Prescriptions");
 
@@ -242,7 +253,7 @@ public class Laboratories extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel21)
                     .addComponent(jCheckBox11))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,7 +272,7 @@ public class Laboratories extends javax.swing.JFrame {
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 123, Short.MAX_VALUE))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -280,7 +291,7 @@ public class Laboratories extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -290,6 +301,68 @@ public class Laboratories extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // Called when the "Save Orders" button is clicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+        // Saves the orders in the database table Labs
+        int rbc = jCheckBox1.isSelected() ? 1 : 0;
+        int wbc = jCheckBox2.isSelected() ? 1 : 0;
+        int liver = jCheckBox3.isSelected() ? 1 : 0;
+        int renal = jCheckBox4.isSelected() ? 1 : 0;
+        int electrolyte = jCheckBox5.isSelected() ? 1 : 0;
+        int xray = jCheckBox6.isSelected() ? 1 : 0;
+        int tomography = jCheckBox7.isSelected() ? 1 : 0;
+        int mri = jCheckBox8.isSelected() ? 1 : 0;
+        int urinary = jCheckBox10.isSelected() ? 1 : 0;
+        int stool = jCheckBox11.isSelected() ? 1 : 0;
+        
+        try { 
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='2015-04-16'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            if (rs.next()) {
+                
+                vid = rs.getInt(1);
+                System.out.println(vid);
+            }
+            
+            sql = "INSERT INTO Labs values("
+                    + "null, "
+                    + "'" + vid + "', "
+                    + "'" + rbc + "', "
+                    + "'" + wbc + "', "
+                    + "'" + liver + "', "
+                    + "'" + renal + "', "
+                    + "'" + electrolyte + "', "
+                    + "'" + xray + "', "
+                    + "'" + tomography + "', "
+                    + "'" + mri + "', "
+                    + "'" + urinary + "', "
+                    + "'" + stool + "')";
+            stmt.executeUpdate(sql);
+            
+            rs.close();
+            stmt.close();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfully saved orders.", "Laboratory Orders", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -318,12 +391,6 @@ public class Laboratories extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Laboratories().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,7 +17,7 @@ NextVisit date NOT NULL,
 PRIMARY KEY(SSN));
 
 create table Visits(
-VID int(11) AUTO_INCREMENT,
+VID int AUTO_INCREMENT,
 SSN varchar(11) NOT NULL,
 VisitDate date NOT NULL,
 ChiefComplaint char(100) NOT NULL,
@@ -30,4 +30,21 @@ DiagnosisByDoctor char(100) NOT NULL,
 NursingActivity char(100) NOT NULL,
 PRIMARY KEY(VID),
 FOREIGN KEY(SSN) REFERENCES Patients(SSN)
+);
+
+create table Labs (
+LabID int AUTO_INCREMENT,
+VID int NOT NULL,
+RedBloodCell boolean NOT NULL,
+WhiteBloodCell boolean NOT NULL,
+LiverFunction boolean NOT NULL,
+RenalFunction boolean NOT NULL,
+Electrolyte boolean NOT NULL,
+XRay boolean NOT NULL,
+ComputedTomography boolean NOT NULL,
+MRI boolean NOT NULL,
+UrinaryTest boolean NOT NULL,
+StoolTest boolean NOT NULL,
+PRIMARY KEY(LabID),
+FOREIGN KEY(VID) REFERENCES Visits(VID)
 );

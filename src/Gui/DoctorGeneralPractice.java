@@ -14,6 +14,7 @@ import javax.swing.*;
 public class DoctorGeneralPractice extends javax.swing.JFrame {
     
     private String patientSSN;
+    private int vid;
 
     /**
      * Creates new form DoctorGeneralPractice
@@ -204,7 +205,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
             stmt.close();
             con.close();
             
-            JOptionPane.showMessageDialog(null, "Sucesfully saved general practice.", "General Practice", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Succesfully saved general practice.", "General Practice", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (ClassNotFoundException e) {
             
@@ -222,7 +223,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     
         // Opens the Laboratories screen
-        new Laboratories();
+        new Laboratories(patientSSN);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
