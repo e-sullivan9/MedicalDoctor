@@ -92,9 +92,9 @@ public class Registration extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Address: ");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel6.setText("<html><div align='right'>DOB:&nbsp;<br>(YYYY-MM-DD)&nbsp;</p></div></html> ");
+        jLabel6.setText("DOB: ");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -104,15 +104,15 @@ public class Registration extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel8.setText("Insurance: ");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("<html><div align='right'>Follow Up:&nbsp;<br>(YYYY-MM-DD)&nbsp;</p></div></html>");
+        jLabel9.setText("Follow-up: ");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel10.setText("ZIP: ");
 
-        jButton1.setText("Register");
+        jButton1.setText("Save");
 
         jButton2.setText("Cancel");
 

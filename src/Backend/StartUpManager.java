@@ -31,7 +31,6 @@ public class StartUpManager {
                     ResultSet rs = stmt.executeQuery(sql);
                     
                     if(rs.next()){
-                        System.out.println("There is One");
                         new Login().setVisible(true);
                         //new Login().setVisible(true);
                     }

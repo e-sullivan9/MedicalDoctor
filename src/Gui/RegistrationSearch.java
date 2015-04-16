@@ -25,6 +25,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jMenuItem1.addActionListener(new Handler());
         jMenuItem2.addActionListener(new Handler());
         buildTable();
+        setVisible(true);
     }
     
 
@@ -83,10 +84,15 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jButton3.setText("Edit Patient");
 
         jButton4.setText("Delete Patient");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Log out");
+        jMenuItem1.setText("Logout");
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Exit");
@@ -155,6 +161,10 @@ public class RegistrationSearch extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
  // <editor-fold defaultstate="collapsed" desc="ActionListener NEEDS COMMENTS"> 
     public class Handler implements ActionListener {
         public void actionPerformed(ActionEvent e){
@@ -167,12 +177,11 @@ public class RegistrationSearch extends javax.swing.JFrame {
             }
             if(e.getSource()==jButton4){
                  try {
-                     System.out.println("here");
                     // Creates a connection to the database
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
                     Statement stmt = con.createStatement();
-                    String sql="DELETE FROM patients WHERE SSN = "+jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0 )+"";
+                    String sql="DELETE FROM Patients WHERE SSN = '"+jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0 )+"'";
                     stmt.executeUpdate(sql);
                     buildTable();
                     con.close();
