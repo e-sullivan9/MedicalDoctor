@@ -113,6 +113,11 @@ public class Registration extends javax.swing.JFrame {
         jLabel10.setText("ZIP: ");
 
         jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancel");
 
@@ -235,6 +240,10 @@ public class Registration extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
         public class Handler implements ActionListener {
         public void actionPerformed(ActionEvent e){
             String error="";
@@ -287,7 +296,7 @@ public class Registration extends javax.swing.JFrame {
                     }
                     if(i!=0){
                       int yn =  JOptionPane.showConfirmDialog(null, "A person with this SSN already exist would you like to update their information?","Update", JOptionPane.YES_NO_CANCEL_OPTION);
-                      if(yn==JOptionPane.OK_OPTION){
+                      if(yn==JOptionPane.YES_OPTION){
                           stmt.executeUpdate("UPDATE patients SET FirstName = '"+firstNameTF.getText()+"', LastName ='"+lastNameTF.getText()+"', address ='"+addressTF.getText()+"', MedicalInsurance = '"
                                   +insuranceTF.getText()+"', DOB = '"+dobTF.getText()+"', ZIP = '"+zipTF.getText()+"', Gender = '"+genderTF.getText()
                                   +"', NextVisit = '"+followUpTF.getText()+"' WHERE SSN ='"+ssnTF.getText()+"'");
