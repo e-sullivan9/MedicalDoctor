@@ -5,7 +5,7 @@
  */
 
 package Gui;
-
+import Backend.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
@@ -100,7 +100,7 @@ public class ManageUsers extends javax.swing.JFrame {
             }
         });
 
-        model = new DefaultTableModel();
+        model = new NonEditableTable();
         String[] columns = {"Username", "Password", "Section"};
         model.setColumnIdentifiers(columns);
         jTable1.setModel(model

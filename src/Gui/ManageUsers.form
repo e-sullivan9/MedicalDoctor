@@ -202,7 +202,7 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="model = new DefaultTableModel();&#xa;String[] columns = {&quot;Username&quot;, &quot;Password&quot;, &quot;Section&quot;};&#xa;model.setColumnIdentifiers(columns);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="model = new NonEditableTable();&#xa;String[] columns = {&quot;Username&quot;, &quot;Password&quot;, &quot;Section&quot;};&#xa;model.setColumnIdentifiers(columns);"/>
           </AuxValues>
         </Component>
       </SubComponents>

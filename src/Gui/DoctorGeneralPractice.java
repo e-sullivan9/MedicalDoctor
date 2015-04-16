@@ -15,6 +15,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
     
     private String patientSSN;
     private int vid;
+    private String date;
 
     /**
      * Creates new form DoctorGeneralPractice
@@ -190,7 +191,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             String sql = "INSERT INTO Visits values(null, '" + patientSSN + "', "
-                    + "'2015-04-16', "
+                    + "'" + date + "', "
                     + "'" + chiefComplaint + "', "
                     + "'" + presentIllness + "', "
                     + "'" + pastHistory + "', "
@@ -221,7 +222,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
 
     // This method is called when the "Laboratories" button is clicked
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    
+        
         // Opens the Laboratories screen
         new Laboratories(patientSSN);
         

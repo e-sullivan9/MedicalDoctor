@@ -5,7 +5,11 @@
  */
 package Gui;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.*;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -15,6 +19,7 @@ public class Laboratories extends javax.swing.JFrame {
     
     private int vid;
     private String patientSSN;
+    private String date;
     
     /**
      * Creates new form Laboratories
@@ -24,6 +29,11 @@ public class Laboratories extends javax.swing.JFrame {
         setVisible(true);
         setLocationRelativeTo(null);
         patientSSN = ssn;
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        date = dateFormat.format(cal.getTime());
+        
     }
 
     /**
@@ -317,18 +327,20 @@ public class Laboratories extends javax.swing.JFrame {
         int urinary = jCheckBox10.isSelected() ? 1 : 0;
         int stool = jCheckBox11.isSelected() ? 1 : 0;
         
+     
+        
         try { 
             
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='2015-04-16'";
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
             ResultSet rs = stmt.executeQuery(sql);
             
             if (rs.next()) {
                 
                 vid = rs.getInt(1);
-                System.out.println(vid);
+
             }
             
             sql = "INSERT INTO Labs values("
