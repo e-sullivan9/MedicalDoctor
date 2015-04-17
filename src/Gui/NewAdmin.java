@@ -20,6 +20,7 @@ public class NewAdmin extends javax.swing.JFrame {
      */
     public NewAdmin() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

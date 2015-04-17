@@ -25,6 +25,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jMenuItem1.addActionListener(new Handler());
         jMenuItem2.addActionListener(new Handler());
         buildTable();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
     
@@ -52,7 +53,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 50)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

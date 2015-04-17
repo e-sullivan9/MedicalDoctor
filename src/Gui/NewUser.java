@@ -28,8 +28,11 @@ public class NewUser extends javax.swing.JFrame {
         // Sets the reference to the previous screen
         manage = m;
         
-        // Sets the screen to visible
+        // Sets the JFrame to visible
         setVisible(true);
+        
+        // Centers the JFrame
+        setLocationRelativeTo(null);
         
     }
 
@@ -53,7 +56,7 @@ public class NewUser extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         usernameTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         saveButton.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         saveButton.setText("Create User");
