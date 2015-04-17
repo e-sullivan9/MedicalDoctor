@@ -171,7 +171,7 @@ public class Login extends JFrame {
                 } else {
                     
                     // Display an error message
-                    JOptionPane.showMessageDialog(null, "Passowrd Incorrect", "Login", JOptionPane.ERROR_MESSAGE);                    
+                    JOptionPane.showMessageDialog(null, "Password Incorrect", "Login", JOptionPane.ERROR_MESSAGE);                    
                        
                 }
                 
