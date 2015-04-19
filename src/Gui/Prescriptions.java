@@ -5,19 +5,37 @@
  */
 package Gui;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jusji_000
  */
 public class Prescriptions extends javax.swing.JFrame {
 
+    private int vid;
+    private String patientSSN;
+    private String date;
     /**
      * Creates new form Prescriptions
      */
-    public Prescriptions() {
+    public Prescriptions(String ssn) {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
+        patientSSN = ssn;
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        date = dateFormat.format(cal.getTime());
     }
 
     /**
@@ -109,6 +127,11 @@ public class Prescriptions extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Save Prescriptions");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,6 +171,52 @@ public class Prescriptions extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int im = jCheckBox1.isSelected() ? 1 : 0;
+        int iv = jCheckBox2.isSelected() ? 1 : 0;
+        int sc = jCheckBox3.isSelected() ? 1 : 0;
+        String po = jTextArea1.getText().isEmpty() ? "" : jTextArea1.getText();
+        
+        try { 
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            if (rs.next()) {
+                
+                vid = rs.getInt(1);
+
+            }
+            
+            sql = "INSERT INTO Prescriptions values(NULL, '"
+                    + vid + "','"
+                    + im + "','"
+                    + iv + "','"
+                    + sc + "','"
+                    + po + "')";
+            stmt.executeUpdate(sql);
+            
+            rs.close();
+            stmt.close();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfully saved Prescriptions.", "Prescriptions", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -176,11 +245,6 @@ public class Prescriptions extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Prescriptions().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
