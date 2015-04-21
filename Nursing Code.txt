@@ -1,0 +1,37 @@
+try { 
+   	    	String po = "";
+   	    	String na = "";
+   	    	
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {            
+                vid = rs.getInt(1);
+                na = rs.getString("NursingActivity");
+            }
+            
+            sql = "SELECT * FROM Prescriptions WHERE VID='" + vid + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                po = rs.getString("OralMedication");
+            }
+            
+            jTextArea1.setText(po);
+            jTextArea2.setText(na);
+
+            rs.close();
+            stmt.close();
+            con.close();
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
