@@ -28,11 +28,11 @@ public class Nursing extends javax.swing.JFrame {
      * Creates new form Nursing
      */
 
-    public Nursing() {
+    public Nursing(String ssn) {
         initComponents();
-        patientSSN = "111-11-1111";
+        patientSSN = ssn;
     	setLocationRelativeTo(null);
-    	
+    	setVisible(true);
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         date = dateFormat.format(cal.getTime());
@@ -374,13 +374,6 @@ public class Nursing extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Nursing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Nursing().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

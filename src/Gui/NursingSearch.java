@@ -11,7 +11,9 @@ import java.sql.*;
  * @author jusji_000
  */
 public class NursingSearch extends javax.swing.JFrame {
-
+    
+    private String patientSSN;
+    
     /**
      * Creates new form NursingSearch
      */
@@ -61,6 +63,11 @@ public class NursingSearch extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("Select Patient");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,7 +139,7 @@ public class NursingSearch extends javax.swing.JFrame {
             
             // Creates a connection to the database
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "root", "CSCI400");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
             String sql="";
             // SQL statement that returns all of the usernames that match the username entered in the text field
@@ -169,6 +176,7 @@ public class NursingSearch extends javax.swing.JFrame {
                 
                 // Data from the database for that result
                 query = rs.getString("SSN");
+                patientSSN = query;
                 firstN = rs.getString("FirstName");
                 lastN = rs.getString("LastName");
                 add = rs.getString("Address");
@@ -194,6 +202,11 @@ public class NursingSearch extends javax.swing.JFrame {
             
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new Nursing(patientSSN);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

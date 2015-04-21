@@ -223,6 +223,11 @@ public class Laboratories extends javax.swing.JFrame {
         });
 
         jButton2.setText("Prescriptions");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -375,6 +380,17 @@ public class Laboratories extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    // This method is called when the Prescriptions button is clicked
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    
+        // Opens the Prescriptions screen
+        new Prescriptions(patientSSN);
+        
+        // Disposes this screen
+        this.dispose();
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
