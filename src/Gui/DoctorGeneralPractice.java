@@ -5,6 +5,9 @@
  */
 package Gui;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.*;
 
 /**
@@ -26,6 +29,10 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
         setVisible(true);
         
         patientSSN = ssn;
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        date = dateFormat.format(cal.getTime());
         
         setLocationRelativeTo(null);
     }
