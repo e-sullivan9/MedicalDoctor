@@ -5,17 +5,38 @@
  */
 package Gui;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jusji_000
  */
 public class Nursing extends javax.swing.JFrame {
-
+	private String patientSSN = "";
+	private String date = "";
+	private int vid;
     /**
      * Creates new form Nursing
      */
+
     public Nursing() {
         initComponents();
+        patientSSN = "111-11-1111";
+    	setLocationRelativeTo(null);
+    	
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        date = dateFormat.format(cal.getTime());
+
     }
 
     /**
@@ -26,7 +47,7 @@ public class Nursing extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -242,12 +263,89 @@ public class Nursing extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
+        
+   	 	try { 
+   	    	String po = "";
+   	    	String na = "";
+   	    	
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
 
+            if (rs.next()) {            
+                vid = rs.getInt(1);
+                na = rs.getString("NursingActivity");
+            }
+            
+            sql = "SELECT * FROM Prescriptions WHERE VID='2'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                po = rs.getString("OralMedication");
+            }
+            
+            jTextArea1.setText(po);
+            jTextArea2.setText(na);
+
+            rs.close();
+            stmt.close();
+            con.close();
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    	int im = jCheckBox1.isSelected() ? 1 : 0;
+        int iv = jCheckBox2.isSelected() ? 1 : 0;
+        int sc = jCheckBox3.isSelected() ? 1 : 0;
+        String po = jTextArea1.getText().isEmpty() ? "" : jTextArea1.getText();
+        
+        try { 
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            if (rs.next()) {
+                
+                vid = rs.getInt(1);
+
+            }
+            
+            sql = "UPDATE Prescriptions SET IntramuscularInjection='" + im + 
+            		"', IntravascularInjection='" + iv + 
+            		"', SubcutaneousInjection='" + sc +
+            		"' WHERE vid='" + vid + "'"; 
+            stmt.executeUpdate(sql);
+            
+            rs.close();
+            stmt.close();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfully saved Activities", "Activities", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
