@@ -5,6 +5,7 @@
  */
 package Gui;
 
+import Backend.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,6 +37,42 @@ public class Nursing extends javax.swing.JFrame {
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         date = dateFormat.format(cal.getTime());
+        try { 
+   	    	String po = "";
+   	    	String na = "";
+   	    	
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {            
+                vid = rs.getInt(1);
+                na = rs.getString("NursingActivity");
+            }
+            
+            sql = "SELECT * FROM Prescriptions WHERE VID='" + vid + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                po = rs.getString("OralMedication");
+            }
+            
+            jTextArea1.setText(po);
+
+            rs.close();
+            stmt.close();
+            con.close();
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
 
     }
 
@@ -47,7 +84,7 @@ public class Nursing extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-    
+
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -61,8 +98,8 @@ public class Nursing extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
@@ -80,11 +117,17 @@ public class Nursing extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Intramuscular injection (IM)");
 
+        jCheckBox1.setEnabled(false);
+
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Intravascular injection (IV)");
 
+        jCheckBox2.setEnabled(false);
+
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Subcutaneous injection (SC)");
+
+        jCheckBox3.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -128,6 +171,7 @@ public class Nursing extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("P.O (Per Os; Oral medication)");
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -158,9 +202,31 @@ public class Nursing extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Labs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        jTable1.setModel(new NonEditableTable() {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        String[] columns = {"Labs", "Ordered?"};
+        ((NonEditableTable) jTable1.getModel()).setColumnIdentifiers(columns);
+        String[] labs = {"Red Blood Cell", "White Blood Cell",
+            "Liver Function",
+            "Renal Function",
+            "Electrolyte",
+            "X-Ray",
+            "Computed Tomography",
+            "MRI",
+            "Urinary Test",
+            "StoolTest" };
+
+        for (int i = 0; i < labs.length; i++) {
+            ((NonEditableTable) jTable1.getModel()).addRow(new Object[]{labs[i],false});
+        }
+        jScrollPane4.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -168,14 +234,13 @@ public class Nursing extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -198,7 +263,7 @@ public class Nursing extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -261,47 +326,9 @@ public class Nursing extends javax.swing.JFrame {
                         .addComponent(jButton2))
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
-        
-   	 	try { 
-   	    	String po = "";
-   	    	String na = "";
-   	    	
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
-            Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
-            ResultSet rs = stmt.executeQuery(sql);
 
-            if (rs.next()) {            
-                vid = rs.getInt(1);
-                na = rs.getString("NursingActivity");
-            }
-            
-            sql = "SELECT * FROM Prescriptions WHERE VID='2'";
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                po = rs.getString("OralMedication");
-            }
-            
-            jTextArea1.setText(po);
-            jTextArea2.setText(na);
-
-            rs.close();
-            stmt.close();
-            con.close();
-                        
-        } catch (ClassNotFoundException e) {
-            
-            System.out.println(e.getMessage());
-            
-        } catch (SQLException e) {
-            
-            System.out.println(e.getMessage());
-            
-        }
-        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -393,10 +420,10 @@ public class Nursing extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
