@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package Gui;
+
 import Backend.*;
 import java.awt.event.*;
 import java.sql.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jusji_000
@@ -15,6 +18,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrationSearch
+     * initialize the JFrame and fills the table.
      */
     public RegistrationSearch() {
         initComponents();
@@ -28,7 +32,6 @@ public class RegistrationSearch extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,18 +64,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SSN", "Name","First Name","Last Name","DOB" }));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Search Patient");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jTable1.setModel(new NonEditableTable());
         String[] columns = {"SSN","First Name","Last Name","Address","Medical Insurance", "DOB","ZIP", "Gender","Next Visit"};
@@ -81,20 +73,10 @@ public class RegistrationSearch extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("New Patient");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Edit Patient");
 
         jButton4.setText("Delete Patient");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
 
         jMenu1.setText("File");
 
@@ -159,79 +141,90 @@ public class RegistrationSearch extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
  // <editor-fold defaultstate="collapsed" desc="ActionListener NEEDS COMMENTS"> 
+    
+    /**
+     * ActionListener for the new patient, edit patient, delete patient buttons,Search button, and JMenuItems.
+     * the new patient button opens a new registration window and closes this window
+     * the edit patient button open a registration window with all the field filled with the selected patients info
+     * the delete patient button deletes the selected patient from the database and update the JTable.
+     * search buttons refills the JTable with a specified search parameter 
+     * JMenuItems alway the user to logout or exit
+     */
     public class Handler implements ActionListener {
-        public void actionPerformed(ActionEvent e){
-            if(e.getSource()==jMenuItem1){
+
+        public void actionPerformed(ActionEvent e) {
+            //Logout JMenuItem
+            if (e.getSource() == jMenuItem1) {
                 new Login().setVisible(true);
                 dispose();
             }
-            if(e.getSource()==jMenuItem2){
+            //Exit JMenuItem
+            if (e.getSource() == jMenuItem2) {
                 System.exit(0);
             }
-            if(e.getSource()==jButton4){
-                 try {
-                    // Creates a connection to the database
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
-                    Statement stmt = con.createStatement();
-                    String sql="DELETE FROM Patients WHERE SSN = '"+jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0 )+"'";
-                    stmt.executeUpdate(sql);
-                    buildTable();
-                    con.close();
-                    stmt.close();
-                 }
-                 catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-                 } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+            //Delete Patient button
+            if (e.getSource() == jButton4) {
+                try {
+                    
+                    //asks if the user really wants to delete
+                    int yesno = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "Delete", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (yesno == JOptionPane.YES_OPTION) {
+                        Class.forName("com.mysql.jdbc.Driver");// Creates a connection to the database
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+                        Statement stmt = con.createStatement();
+                        String sql = "DELETE FROM Patients WHERE SSN = '" + jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0) + "'";
+                        stmt.executeUpdate(sql);
+                        buildTable();
+                        con.close();
+                        stmt.close();
+                    }
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } catch (Exception ex){
+                    
+                }
             }
-            if(e.getSource()==jButton2){
+            //new patient button
+            if (e.getSource() == jButton2) {
                 new Registration().setVisible(true);
+                dispose();
             }
-            if(e.getSource()==jButton3){
-                new Registration((String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0 )
-                        ,(String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 6 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 7 ),
-                        (String)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 8 )).setVisible(true);
+            //edit patient button
+            if (e.getSource() == jButton3) {
+                try{
+                //pulls the information from the JTable and makes a filled registration window    
+                new Registration((String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 6),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 7),
+                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 8)).setVisible(true);
+                dispose();
+                } catch(Exception ex){
+                    
+                }
             }
-            if(e.getSource()==jButton1){
+            //search button
+            if (e.getSource() == jButton1) {
                 buildTable();
             }
         }
     }
-    
+
     public void buildTable() {
-                  int rows = jTable1.getRowCount();
+        int rows = jTable1.getRowCount();
         for (int i = 0; i < rows; i++) {
             ((javax.swing.table.DefaultTableModel) jTable1.getModel()).removeRow(0);
         }
-        
+
         // Gets the username from the text field
         String query = jTextField1.getText();
-        
+
         // Strings for the password and section from the database
         String firstN = "";
         String lastN = "";
@@ -241,22 +234,22 @@ public class RegistrationSearch extends javax.swing.JFrame {
         String zip = "";
         String gender = "";
         String nextV = "";
-        
+
         try {
-            
+
             // Creates a connection to the database
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql="";
+            String sql = "";
             // SQL statement that returns all of the usernames that match the username entered in the text field
-            switch(jComboBox1.getSelectedIndex()){
+            switch (jComboBox1.getSelectedIndex()) {
                 case 0:
                     sql = "SELECT * FROM Patients WHERE SSN LIKE '" + query + "%'";
                     break;
                 case 1:
                     String[] temp = query.split(" ");
-                    sql = "SELECT * FROM Patients WHERE (FirstName LIKE '" + temp[0] + "%' AND LastName LIKE '"+temp[1]+"%')";
+                    sql = "SELECT * FROM Patients WHERE (FirstName LIKE '" + temp[0] + "%' AND LastName LIKE '" + temp[1] + "%')";
                     break;
                 case 2:
                     sql = "SELECT * FROM Patients WHERE FirstName LIKE '" + query + "%'";
@@ -268,19 +261,12 @@ public class RegistrationSearch extends javax.swing.JFrame {
                     sql = "SELECT * FROM Patients WHERE DOB LIKE '%" + query + "%'";
                     break;
             }
-            
-            
-            
-            
-            
-            
-            
-            
+
             ResultSet rs = stmt.executeQuery(sql);
-            
+
             // Loop through all the results and add each to the table model
             while (rs.next()) {
-                
+
                 // Data from the database for that result
                 query = rs.getString("SSN");
                 firstN = rs.getString("FirstName");
@@ -290,23 +276,23 @@ public class RegistrationSearch extends javax.swing.JFrame {
                 dob = rs.getString("DOB");
                 zip = rs.getString("zip");
                 gender = rs.getString("gender");
-                nextV =rs.getString("NextVisit");
-                
+                nextV = rs.getString("NextVisit");
+
                 // Adds the data to the table model
                 ((javax.swing.table.DefaultTableModel) jTable1.getModel()).addRow(new Object[]{query, firstN, lastN, add, medInsur, dob, zip, gender, nextV});
 
             }
-            
+
             // Closes the connection to the database
             rs.close();
             stmt.close();
             con.close();
-            
+
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } 
+        }
     }
     // </editor-fold>  
     /**
