@@ -23,10 +23,23 @@ public class Registration extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         jButton1.addActionListener(new Handler());
         jButton2.addActionListener(new Handler2());
+        jButton3.addActionListener(new Handler2());
+        setLocationRelativeTo(null);
     }
+    /**
+     * Registration Constructor for the editing form
+     * @param ssn
+     * @param firstName
+     * @param lastName
+     * @param address
+     * @param med
+     * @param dob
+     * @param zip
+     * @param gender
+     * @param next 
+     */
     public Registration(String ssn,String firstName,String lastName,String address,String med,String dob,String zip,String gender,String next) {
         initComponents();
-        jButton1.addActionListener(new Handler());
         ssnTF.setText(ssn);
         firstNameTF.setText(firstName);
         lastNameTF.setText(lastName);
@@ -37,6 +50,10 @@ public class Registration extends javax.swing.JFrame {
         genderTF.setText(gender);
         followUpTF.setText(next);
         ssnTF.setEditable(false);
+        jButton1.addActionListener(new Handler());
+        jButton2.addActionListener(new Handler2());
+        jButton3.addActionListener(new Handler2());
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -70,6 +87,7 @@ public class Registration extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -113,13 +131,10 @@ public class Registration extends javax.swing.JFrame {
         jLabel10.setText("ZIP: ");
 
         jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jButton2.setText("Cancel");
+
+        jButton3.setText("Close");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,19 +147,21 @@ public class Registration extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(addressTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jButton1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton3))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(dobTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,8 +238,9 @@ public class Registration extends javax.swing.JFrame {
                     .addComponent(dobTF, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton3)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
                 .addGap(147, 147, 147))
         );
 
@@ -239,14 +257,18 @@ public class Registration extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+/**
+ * Action Listener for the save button
+ * Checks the entered fields format, checks if it is a unique patient and enters the new patient into the database.
+ */
         public class Handler implements ActionListener {
+            
+            
         public void actionPerformed(ActionEvent e){
             String error="";
+            /*
+            Checks the text fields for format
+            */
             if(ssnTF.getText().isEmpty()){
                 error +="- SSN\n";
             }
@@ -280,7 +302,11 @@ public class Registration extends javax.swing.JFrame {
             //ZIP should be in the format XXXXX or XXXXX-XXXX
             if(!zipTF.getText().isEmpty()&&(!zipTF.getText().matches("[0-9]{5}")&&!zipTF.getText().matches("[0-9]{5}-[0-9]{4}"))){
                 error +="- ZIP Code (Check format)\n";
-            }  
+            } 
+            
+            /*
+            If no error calls are made then it add the fields to the database or updates if there is a matching ssn already in the database.
+            */
             if(error.isEmpty()){
                 try {
             
@@ -295,6 +321,9 @@ public class Registration extends javax.swing.JFrame {
                         i++;
                     }
                     if(i!=0){
+                        // if there is a conflict of ssn then the program will try to update instead of adding a new one.
+                        // Confirmation from the user if they want to update.
+                        // then close the page and opens a new search window
                       int yn =  JOptionPane.showConfirmDialog(null, "A person with this SSN already exist would you like to update their information?","Update", JOptionPane.YES_NO_CANCEL_OPTION);
                       if(yn==JOptionPane.YES_OPTION){
                           stmt.executeUpdate("UPDATE patients SET FirstName = '"+firstNameTF.getText()+"', LastName ='"+lastNameTF.getText()+"', address ='"+addressTF.getText()+"', MedicalInsurance = '"
@@ -304,12 +333,16 @@ public class Registration extends javax.swing.JFrame {
                         }
                       else if(yn==JOptionPane.CANCEL_OPTION){
                           dispose();
+                          new RegistrationSearch();
                       }
                     }
+                    // if there is no conflict the patient is added to the database. then closes the page and opens a new search window.
                     else{
                          stmt.executeUpdate("INSERT INTO patients VALUES('"+ssnTF.getText()+"','"+firstNameTF.getText()+"','"+lastNameTF.getText()+"','"+addressTF.getText()+"','"
                                  +insuranceTF.getText()+"','"+dobTF.getText()+"','"+zipTF.getText()+"','"+genderTF.getText()+"','"+followUpTF.getText()+"')");
                     JOptionPane.showMessageDialog(null,"Patient Created");
+                    dispose();
+                    new RegistrationSearch();
                     }
                     rs.close();
                     stmt.close();
@@ -324,18 +357,22 @@ public class Registration extends javax.swing.JFrame {
                 }
             }
             else{
-                System.out.println("here9");
-                System.out.println(error);
                 JOptionPane.showMessageDialog(null,"Please enter these missing fields: \n"+error,"Missing Fields",JOptionPane.WARNING_MESSAGE);
             }
                                 
         }
     }
+        
+        /*
+        ActionListener for cancel and close buttons
+        
+        */
     public class Handler2 implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
+            new RegistrationSearch();
         }
    }
     /**
@@ -382,6 +419,7 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JTextField insuranceTF;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
