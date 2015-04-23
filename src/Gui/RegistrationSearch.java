@@ -9,6 +9,7 @@ import Backend.*;
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -22,6 +23,7 @@ public class RegistrationSearch extends javax.swing.JFrame {
      */
     public RegistrationSearch() {
         initComponents();
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jButton2.addActionListener(new Handler());
         jButton1.addActionListener(new Handler());
         jButton4.addActionListener(new Handler());

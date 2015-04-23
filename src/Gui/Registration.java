@@ -22,7 +22,7 @@ public class Registration extends javax.swing.JFrame {
         initComponents();
         this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
-        jButton2.addActionListener(new Handler2());
+        //jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
         setLocationRelativeTo(null);
     }
@@ -52,7 +52,7 @@ public class Registration extends javax.swing.JFrame {
         ssnTF.setEditable(false);
         this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
-        jButton2.addActionListener(new Handler2());
+        //jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
         setLocationRelativeTo(null);
     }
@@ -87,7 +87,6 @@ public class Registration extends javax.swing.JFrame {
         zipTF = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -133,8 +132,6 @@ public class Registration extends javax.swing.JFrame {
 
         jButton1.setText("Save");
 
-        jButton2.setText("Cancel");
-
         jButton3.setText("Close");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -149,25 +146,25 @@ public class Registration extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(addressTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jButton1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jButton2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jButton3))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(addressTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(dobTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(dobTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(zipTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(zipTF, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jButton3))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -237,12 +234,11 @@ public class Registration extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dobTF, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(123, 123, 123)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addGap(147, 147, 147))
+                    .addComponent(jButton1)
+                    .addComponent(jButton3))
+                .addGap(42, 42, 42))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -310,7 +306,6 @@ public class Registration extends javax.swing.JFrame {
             */
             if(error.isEmpty()){
                 try {
-            
                      // Creates a connection to the database
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
@@ -327,6 +322,11 @@ public class Registration extends javax.swing.JFrame {
                         // then close the page and opens a new search window
                       int yn =  JOptionPane.showConfirmDialog(null, "A person with this SSN already exist would you like to update their information?","Update", JOptionPane.YES_NO_CANCEL_OPTION);
                       if(yn==JOptionPane.YES_OPTION){
+                          if(followUpTF.getText().isEmpty()){
+                              stmt.executeUpdate("UPDATE patients SET FirstName = '"+firstNameTF.getText()+"', LastName ='"+lastNameTF.getText()+"', address ='"+addressTF.getText()+"', MedicalInsurance = '"
+                                  +insuranceTF.getText()+"', DOB = '"+dobTF.getText()+"', ZIP = '"+zipTF.getText()+"', Gender = '"+genderTF.getText()
+                                  +"' WHERE SSN = '"+ssnTF.getText()+"'");
+                          }else
                           stmt.executeUpdate("UPDATE patients SET FirstName = '"+firstNameTF.getText()+"', LastName ='"+lastNameTF.getText()+"', address ='"+addressTF.getText()+"', MedicalInsurance = '"
                                   +insuranceTF.getText()+"', DOB = '"+dobTF.getText()+"', ZIP = '"+zipTF.getText()+"', Gender = '"+genderTF.getText()
                                   +"', NextVisit = '"+followUpTF.getText()+"' WHERE SSN ='"+ssnTF.getText()+"'");
@@ -339,6 +339,10 @@ public class Registration extends javax.swing.JFrame {
                     }
                     // if there is no conflict the patient is added to the database. then closes the page and opens a new search window.
                     else{
+                        if(followUpTF.getText().isEmpty()){
+                            stmt.executeUpdate("INSERT INTO patients(SSN,FirstName,LastName,Address,MedicalInsurance,DOB,ZIP,Gender) VALUES('"+ssnTF.getText()+"','"+firstNameTF.getText()+"','"+lastNameTF.getText()+"','"+addressTF.getText()+"','"
+                                 +insuranceTF.getText()+"','"+dobTF.getText()+"','"+zipTF.getText()+"','"+genderTF.getText()+"')");
+                        }else
                          stmt.executeUpdate("INSERT INTO patients VALUES('"+ssnTF.getText()+"','"+firstNameTF.getText()+"','"+lastNameTF.getText()+"','"+addressTF.getText()+"','"
                                  +insuranceTF.getText()+"','"+dobTF.getText()+"','"+zipTF.getText()+"','"+genderTF.getText()+"','"+followUpTF.getText()+"')");
                     JOptionPane.showMessageDialog(null,"Patient Created");
@@ -424,7 +428,6 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JTextField genderTF;
     private javax.swing.JTextField insuranceTF;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
