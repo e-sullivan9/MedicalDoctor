@@ -23,6 +23,7 @@ public class NursingSearch extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -238,6 +239,10 @@ public class NursingSearch extends javax.swing.JFrame {
     	int a = jTable1.getSelectedRow();
         patientSSN = (String) jTable1.getValueAt(a, 0);
         new Nursing(patientSSN);
+        
+        // Diposes this screen
+        this.dispose();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // Called when the exit menu item is pressed
