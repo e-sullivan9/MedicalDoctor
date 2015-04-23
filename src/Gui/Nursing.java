@@ -49,7 +49,7 @@ public class Nursing extends javax.swing.JFrame {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "' AND VisitDate='" + "'";
             ResultSet rs = stmt.executeQuery(sql);
 
             if (rs.next()) {            
@@ -86,7 +86,7 @@ public class Nursing extends javax.swing.JFrame {
             }
             jTextArea3.setText(na);
             
-            sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "'";
+            sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "' AND VisitDate='" + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 nextVisit = rs.getDate("NextVisit").toString();
