@@ -5,6 +5,9 @@
  */
 package Gui;
 import java.sql.*;
+
+import javax.swing.ListSelectionModel;
+
 import Backend.*;
 /**
  *
@@ -63,6 +66,7 @@ public class Doctor extends javax.swing.JFrame {
         jTable1.setEditingColumn(0);
         jTable1.setEditingRow(0);
         jTable1.setFillsViewportHeight(true);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("Select Patient");
@@ -176,7 +180,6 @@ public class Doctor extends javax.swing.JFrame {
                 
                 // Data from the database for that result
                 query = rs.getString("SSN");
-                patientSSN = query;
                 firstN = rs.getString("FirstName");
                 lastN = rs.getString("LastName");
                 add = rs.getString("Address");
@@ -205,7 +208,8 @@ public class Doctor extends javax.swing.JFrame {
 
     // This method is called when the "Select Patient" button is clicked
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+    	int a = jTable1.getSelectedRow();
+        patientSSN = (String) jTable1.getValueAt(a, 0);
         // Opens the DoctorGeneralPractice Screen
         new DoctorGeneralPractice(patientSSN);
         

@@ -33,6 +33,35 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         date = dateFormat.format(cal.getTime());
+        try {    	    	
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {      
+            	chiefComplaintTextField.setText(rs.getString(4));
+            	diagnosisTextField.setText(rs.getString(5));
+            	impressionTextField.setText(rs.getString(6));
+            	pastHistoryTextField.setText(rs.getString(7));
+            	physicalExamTextField.setText(rs.getString(8));
+            	presentIllnessTextField.setText(rs.getString(9));
+            	symptomsTextField.setText(rs.getString(10));  
+            }   
+            
+          
+            
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
         
         setLocationRelativeTo(null);
     }
@@ -235,18 +264,34 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
             
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
-            String sql = "INSERT INTO Visits values(null, '" + patientSSN + "', "
-                    + "'" + date + "', "
-                    + "'" + chiefComplaint + "', "
-                    + "'" + presentIllness + "', "
-                    + "'" + pastHistory + "', "
-                    + "'" + subjectiveSymptoms + "', "
-                    + "'" + physicalExam + "', "
-                    + "'" + impression + "', "
-                    + "'" + diagnosis + "', "
-                    + "' ')";
             Statement stmt = con.createStatement();
-            stmt.executeUpdate(sql);
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            if(!rs.next()){
+	            sql = "INSERT INTO Visits values(null, '" + patientSSN + "', "
+	                    + "'" + date + "', "
+	                    + "'" + chiefComplaint + "', "
+	                    + "'" + presentIllness + "', "
+	                    + "'" + pastHistory + "', "
+	                    + "'" + subjectiveSymptoms + "', "
+	                    + "'" + physicalExam + "', "
+	                    + "'" + impression + "', "
+	                    + "'" + diagnosis + "', "
+	                    + "' ')";
+	            con.createStatement().executeUpdate(sql);
+            }
+            else{
+            	sql = "UPDATE Visits SET VisitDate='" + date 
+            			+ "', ChiefComplaint='" + chiefComplaint
+            			+ "', PresentIllness='" + presentIllness
+            			+ "', PastHistory='" + pastHistory
+            			+ "', ReviewOfTheSystem='" + subjectiveSymptoms
+            			+ "', PhysicalExam='" + physicalExam
+            			+ "', Impression='" + impression
+            			+ "', DiagnosisByDoctor='" + diagnosis
+            			+ "' WHERE SSN='" + patientSSN + "'";
+            	con.createStatement().executeUpdate(sql);
+            }
             
             stmt.close();
             con.close();
@@ -320,7 +365,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
         //</editor-fold>
 
     }
-
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField chiefComplaintTextField;
     private javax.swing.JTextField diagnosisTextField;

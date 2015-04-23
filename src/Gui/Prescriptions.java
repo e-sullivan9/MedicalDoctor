@@ -36,6 +36,44 @@ public class Prescriptions extends javax.swing.JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         date = dateFormat.format(cal.getTime());
+        try {
+   	    	String po = "";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {            
+                vid = rs.getInt(1);
+            }   
+            
+            sql = "SELECT * FROM Prescriptions WHERE VID='" + vid + "'";
+            rs = stmt.executeQuery(sql);     
+            if(rs.next()){
+                po = rs.getString("OralMedication");    
+                if(rs.getInt(3) == 1)
+                	jCheckBox1.setSelected(true);
+                if(rs.getInt(4) == 1)
+	            	jCheckBox2.setSelected(true);
+                if(rs.getInt(5) == 1)
+	            	jCheckBox3.setSelected(true); 
+            }
+            jTextArea1.setText(po);
+
+            rs.close();
+            stmt.close();
+            con.close();
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
     }
 
     /**
@@ -183,7 +221,7 @@ public class Prescriptions extends javax.swing.JFrame {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
             ResultSet rs = stmt.executeQuery(sql);
             
             if (rs.next()) {
@@ -192,14 +230,25 @@ public class Prescriptions extends javax.swing.JFrame {
 
             }
             
-            sql = "INSERT INTO Prescriptions values(NULL, '"
-                    + vid + "','"
-                    + im + "','"
-                    + iv + "','"
-                    + sc + "','"
-                    + po + "')";
-            stmt.executeUpdate(sql);
-            
+            sql = "SELECT * FROM Prescriptions WHERE vid='" + vid +"'";
+            rs = con.createStatement().executeQuery(sql);
+            if(!rs.next()){
+            	sql = "INSERT INTO Prescriptions values(NULL, '"
+                        + vid + "','"
+                        + im + "','"
+                        + iv + "','"
+                        + sc + "','"
+                        + po + "')";
+            	con.createStatement().executeUpdate(sql);            	
+            }
+            else{
+            	sql = "UPDATE Prescriptions SET IntramuscularInjection='" + im 
+            			+ "',IntravascularInjection='" + iv
+            			+ "',SubcutaneousInjection='" + sc
+            			+ "',OralMedication='" + po
+            			+ "' WHERE vid='" + vid + "'";
+            	con.createStatement().executeUpdate(sql);            	
+            }           
             rs.close();
             stmt.close();
             con.close();

@@ -33,6 +33,55 @@ public class Laboratories extends javax.swing.JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         date = dateFormat.format(cal.getTime());
+        try {    	    	
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {            
+                vid = rs.getInt(1);
+            } 
+            
+            sql = "SELECT * FROM Labs WHERE VID='" + vid + "'";
+            rs = con.createStatement().executeQuery(sql);
+            if (rs.next()) {
+                if(rs.getInt(3) == 1)
+                	jCheckBox1.setSelected(true);
+                if(rs.getInt(4) == 1)
+	            	jCheckBox2.setSelected(true);
+                if(rs.getInt(5) == 1)
+	            	jCheckBox3.setSelected(true);       
+                if(rs.getInt(6) == 1)
+                	jCheckBox4.setSelected(true);
+                if(rs.getInt(7) == 1)
+	            	jCheckBox5.setSelected(true);
+                if(rs.getInt(8) == 1)
+	            	jCheckBox6.setSelected(true); 
+                if(rs.getInt(9) == 1)
+                	jCheckBox7.setSelected(true);
+                if(rs.getInt(10) == 1)
+	            	jCheckBox8.setSelected(true);
+                if(rs.getInt(11) == 1)
+	            	jCheckBox10.setSelected(true); 
+                if(rs.getInt(12) == 1)
+                	jCheckBox11.setSelected(true);         
+            } 
+
+            rs.close();
+            stmt.close();
+            con.close();
+                        
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
         
     }
 
@@ -339,7 +388,7 @@ public class Laboratories extends javax.swing.JFrame {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
             ResultSet rs = stmt.executeQuery(sql);
             
             if (rs.next()) {
@@ -348,21 +397,39 @@ public class Laboratories extends javax.swing.JFrame {
 
             }
             
-            sql = "INSERT INTO Labs values("
-                    + "null, "
-                    + "'" + vid + "', "
-                    + "'" + rbc + "', "
-                    + "'" + wbc + "', "
-                    + "'" + liver + "', "
-                    + "'" + renal + "', "
-                    + "'" + electrolyte + "', "
-                    + "'" + xray + "', "
-                    + "'" + tomography + "', "
-                    + "'" + mri + "', "
-                    + "'" + urinary + "', "
-                    + "'" + stool + "')";
-            stmt.executeUpdate(sql);
-            
+            sql = "SELECT * FROM Labs WHERE vid='" + vid + "'";
+            rs = con.createStatement().executeQuery(sql);
+            if(!rs.next()){
+            	sql = "INSERT INTO Labs values("
+                        + "null, "
+                        + "'" + vid + "', "
+                        + "'" + rbc + "', "
+                        + "'" + wbc + "', "
+                        + "'" + liver + "', "
+                        + "'" + renal + "', "
+                        + "'" + electrolyte + "', "
+                        + "'" + xray + "', "
+                        + "'" + tomography + "', "
+                        + "'" + mri + "', "
+                        + "'" + urinary + "', "
+                        + "'" + stool + "')";   
+            	con.createStatement().executeUpdate(sql);            	
+            }
+            else{
+            	sql = "UPDATE Labs SET RedBloodCell='" + rbc 
+            			+ "',WhiteBloodCell='" + wbc
+            			+ "',LiverFunction='" + liver
+            			+ "',RenalFunction='" + renal 
+            			+ "',Electrolyte='" + electrolyte
+            			+ "',XRay='" + xray
+            			+ "',ComputedTomography='" + tomography 
+            			+ "',MRI='" + mri
+            			+ "',UrinaryTest='" + urinary
+            			+ "',StoolTest='" + stool 
+            			+ "' WHERE vid='" + vid + "'";
+            	con.createStatement().executeUpdate(sql);            	
+            }  
+                        
             rs.close();
             stmt.close();
             con.close();

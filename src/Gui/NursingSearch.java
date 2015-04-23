@@ -6,6 +6,8 @@
 package Gui;
 import Backend.*;
 import java.sql.*;
+
+import javax.swing.ListSelectionModel;
 /**
  *
  * @author jusji_000
@@ -60,6 +62,7 @@ public class NursingSearch extends javax.swing.JFrame {
         String[] columns = {"SSN","First Name","Last Name","Address","Medical Insurance", "DOB","ZIP", "Gender","Next Visit"};
         ((NonEditableTable) jTable1.getModel()).setColumnIdentifiers(columns);
         jTable1.setFillsViewportHeight(true);
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("Select Patient");
@@ -176,7 +179,6 @@ public class NursingSearch extends javax.swing.JFrame {
                 
                 // Data from the database for that result
                 query = rs.getString("SSN");
-                patientSSN = query;
                 firstN = rs.getString("FirstName");
                 lastN = rs.getString("LastName");
                 add = rs.getString("Address");
@@ -204,7 +206,8 @@ public class NursingSearch extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    	int a = jTable1.getSelectedRow();
+        patientSSN = (String) jTable1.getValueAt(a, 0);
         new Nursing(patientSSN);
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -6,6 +6,8 @@
 package Gui;
 
 import Backend.*;
+
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,6 +16,8 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.swing.*;
+
 
 import javax.swing.JOptionPane;
 
@@ -30,7 +34,7 @@ public class Nursing extends javax.swing.JFrame {
      */
 
     public Nursing(String ssn) {
-        initComponents();
+    	initComponents();
         patientSSN = ssn;
     	setLocationRelativeTo(null);
     	setVisible(true);
@@ -40,6 +44,7 @@ public class Nursing extends javax.swing.JFrame {
         try { 
    	    	String po = "";
    	    	String na = "";
+   	    	String nextVisit = "";
    	    	
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
@@ -49,16 +54,44 @@ public class Nursing extends javax.swing.JFrame {
 
             if (rs.next()) {            
                 vid = rs.getInt(1);
-                na = rs.getString("NursingActivity");
-            }
+            }   
             
             sql = "SELECT * FROM Prescriptions WHERE VID='" + vid + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                po = rs.getString("OralMedication");
+                po = rs.getString("OralMedication");    
+                if(rs.getInt(3) == 1)
+                	jCheckBox1.setSelected(true);
+                if(rs.getInt(4) == 1)
+	            	jCheckBox2.setSelected(true);
+                if(rs.getInt(5) == 1)
+	            	jCheckBox3.setSelected(true);            	
+            }            
+            jTextArea1.setText(po);
+            
+            sql = "SELECT * FROM Labs WHERE VID='" + vid + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+            	for(int i = 3; i < 13; i++){
+            		if(rs.getInt(i) == 1){
+            			jTable1.setValueAt(true,i - 3,1);
+            		}
+            	}
             }
             
-            jTextArea1.setText(po);
+            sql = "SELECT * FROM Visits WHERE VID='" + vid + "' AND VisitDate='" + date + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                na = rs.getString("NursingActivity");
+            }
+            jTextArea3.setText(na);
+            
+            sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                nextVisit = rs.getDate("NextVisit").toString();
+            }
+            jTextField1.setText(nextVisit);
 
             rs.close();
             stmt.close();
@@ -128,6 +161,13 @@ public class Nursing extends javax.swing.JFrame {
         jLabel6.setText("Subcutaneous injection (SC)");
 
         jCheckBox3.setEnabled(false);
+
+        
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    	jTextArea1.setLineWrap(true);
+    	jScrollPane3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    	jTextArea3.setLineWrap(true);
+
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -332,37 +372,35 @@ public class Nursing extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    	int im = jCheckBox1.isSelected() ? 1 : 0;
-        int iv = jCheckBox2.isSelected() ? 1 : 0;
-        int sc = jCheckBox3.isSelected() ? 1 : 0;
-        String po = jTextArea1.getText().isEmpty() ? "" : jTextArea1.getText();
-        
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed        
         try { 
             
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN +"' AND VisitDate='" + date + "'";
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
             ResultSet rs = stmt.executeQuery(sql);
             
-            if (rs.next()) {
-                
+            if (rs.next()) {                
                 vid = rs.getInt(1);
-
             }
             
-            sql = "UPDATE Prescriptions SET IntramuscularInjection='" + im + 
-            		"', IntravascularInjection='" + iv + 
-            		"', SubcutaneousInjection='" + sc +
-            		"' WHERE vid='" + vid + "'"; 
+            sql = "UPDATE Visits SET NursingActivity='" + jTextArea3.getText() + "' WHERE vid='" + vid + "'"; 
             stmt.executeUpdate(sql);
             
+            if(!jTextField1.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
+            	JOptionPane.showMessageDialog(null, "- Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+            	sql = "UPDATE Patients SET NextVisit='" + jTextField1.getText() + "' WHERE SSN='" + patientSSN + "'";
+                stmt.executeUpdate(sql);
+            	JOptionPane.showMessageDialog(null, "Successfully saved Activities", "Activities", JOptionPane.INFORMATION_MESSAGE);
+            }
+
             rs.close();
             stmt.close();
             con.close();
             
-            JOptionPane.showMessageDialog(null, "Successfully saved Activities", "Activities", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (ClassNotFoundException e) {
             
