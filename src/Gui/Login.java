@@ -5,6 +5,8 @@
  */
 package Gui;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import javax.swing.*;
 
@@ -21,7 +23,8 @@ public class Login extends JFrame {
         
         // Initializes the components on the JFrame
         initComponents();
-        
+        this.passwordField.addKeyListener(new KeyListener());
+        this.usernameTextField.addKeyListener(new KeyListener());
         // Positions the JFrame to the center of the screen
         setLocationRelativeTo(null);
     }
@@ -108,6 +111,107 @@ public class Login extends JFrame {
     // Login button action performed method
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
     
+        /*
+        * Code to login user into the system.
+        * 1. Checks if the username exists.
+        * 2. If the username exists then we check if the password matches the
+        *    password in the database.
+        * 3. If the passwords match then the next screen opens.
+        *
+        try {
+        
+            // Creates a connection to the database
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            
+            // Selects the user from the database
+            String sql = "SELECT * FROM users WHERE Username='" + usernameTextField.getText() + "';";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            // If there exists a record for that username
+            if (rs.next()) {
+                
+                // Gets the password inputed into the password field
+                String password = "";
+                char[] pass = passwordField.getPassword();
+                
+                // Stores the password from the password field into a String called password
+                for (int i = 0; i < pass.length; i++) {
+                    password = password + pass[i];
+                }
+                
+                // If the password entered matches the password from the ResultSet
+                if (password.equals(rs.getString("Password"))) {
+                    
+                    // If the person logs in as an Administrator
+                    if (rs.getString("Section").equals("Administrator")) {
+                        
+                        // Open the Manage Users screen
+                        ManageUsers manage = new ManageUsers();
+                     
+                    // Else if the person logs in as Registration
+                    } else if (rs.getString("Section").equals("Registration")) {
+                        
+                        // Open the RegistrationSearch screen
+                        RegistrationSearch registrationSearch = new RegistrationSearch();
+                     
+                    // Else if the person logs in as a Doctor
+                    } else if (rs.getString("Section").equals("Doctor")) {
+                        
+                        // Open the DoctorSearch screen
+                        Doctor doctorSearch = new Doctor();
+                     
+                    // Else if the user logs in as Nursing
+                    } else if (rs.getString("Section").equals("Nursing")) {
+                        
+                        // Opens the NursingSearch screen
+                        NursingSearch nursing = new NursingSearch();
+                        
+                    }
+               
+                // Else if the password entered does not match the password from the ResultSet
+                } else {
+                    
+                    // Display an error message
+                    JOptionPane.showMessageDialog(null, "Password Incorrect", "Login", JOptionPane.ERROR_MESSAGE);                    
+                       
+                }
+                
+            // Else if the username does not exist
+            } else {
+                
+                // Display an error message
+                JOptionPane.showMessageDialog(null, "User does not exist.", "Login", JOptionPane.ERROR_MESSAGE);
+                
+            }
+            
+            // Closes the connection to the database
+            rs.close();
+            stmt.close();
+            con.close();
+        
+        } catch (ClassNotFoundException e) {
+        
+            // Prints out the exception
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            // Prints out the exception
+            System.out.println(e.getMessage());
+            
+        }
+        
+        // Clears the textfields
+        usernameTextField.setText("");
+        passwordField.setText("");
+        */
+        confirmLogin();
+    }//GEN-LAST:event_loginButtonActionPerformed
+
+    public void confirmLogin(){
+            
         /*
         * Code to login user into the system.
         * 1. Checks if the username exists.
@@ -204,8 +308,14 @@ public class Login extends JFrame {
         usernameTextField.setText("");
         passwordField.setText("");
         
-    }//GEN-LAST:event_loginButtonActionPerformed
-
+    }
+    public class KeyListener extends KeyAdapter {
+        public void keyPressed(KeyEvent e){
+             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                 confirmLogin();
+             }
+        }
+    }
     /**
      * @param args the command line arguments
      */

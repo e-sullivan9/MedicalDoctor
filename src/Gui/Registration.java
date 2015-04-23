@@ -20,7 +20,7 @@ public class Registration extends javax.swing.JFrame {
      */
     public Registration() {
         initComponents();
-        setLocationRelativeTo(null);
+        this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
         jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
@@ -50,6 +50,7 @@ public class Registration extends javax.swing.JFrame {
         genderTF.setText(gender);
         followUpTF.setText(next);
         ssnTF.setEditable(false);
+        this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
         jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
@@ -375,6 +376,11 @@ public class Registration extends javax.swing.JFrame {
             new RegistrationSearch();
         }
    }
+    public class WindowListener extends WindowAdapter {
+        public void windowClosing(WindowEvent e){
+            new RegistrationSearch();
+        }
+    }
     /**
      * @param args the command line arguments
      */
