@@ -22,9 +22,9 @@ create table Patients (SSN varchar(11) NOT NULL,
 					Address char(100) NOT NULL,
 					MedicalInsurance varchar(12) NOT NULL,
 					DOB date NOT NULL,
-					ZIP int(11) NOT NULL,
+					ZIP varchar(11) NOT NULL,
 					Gender char(20) NOT NULL,
-					NextVisit date NOT NULL,
+					NextVisit date,
 					PRIMARY KEY(SSN));
 
 create table Visits(
@@ -57,5 +57,16 @@ MRI boolean NOT NULL,
 UrinaryTest boolean NOT NULL,
 StoolTest boolean NOT NULL,
 PRIMARY KEY(LabID),
+FOREIGN KEY(VID) REFERENCES Visits(VID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+create table Prescriptions (
+ScriptID int AUTO_INCREMENT,
+VID int NOT NULL,
+IntramuscularInjection boolean NOT NULL,
+IntravascularInjection boolean NOT NULL,
+SubcutaneousInjection boolean NOT NULL,
+OralMedication varchar(500),
+PRIMARY KEY(ScriptID),
 FOREIGN KEY(VID) REFERENCES Visits(VID) ON UPDATE CASCADE ON DELETE CASCADE
 );
