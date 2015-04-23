@@ -25,7 +25,8 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
      */
     public DoctorGeneralPractice(String ssn) {
         initComponents();
-        
+        setLocationRelativeTo(null);
+
         setVisible(true);
         
         patientSSN = ssn;
@@ -63,7 +64,6 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
             
         }
         
-        setLocationRelativeTo(null);
     }
 
     /**
