@@ -494,6 +494,83 @@ public class Laboratories extends javax.swing.JFrame {
     // This method is called when the Prescriptions button is clicked
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     
+        // Saves the orders in the database table Labs
+        int rbc = jCheckBox1.isSelected() ? 1 : 0;
+        int wbc = jCheckBox2.isSelected() ? 1 : 0;
+        int liver = jCheckBox3.isSelected() ? 1 : 0;
+        int renal = jCheckBox4.isSelected() ? 1 : 0;
+        int electrolyte = jCheckBox5.isSelected() ? 1 : 0;
+        int xray = jCheckBox6.isSelected() ? 1 : 0;
+        int tomography = jCheckBox7.isSelected() ? 1 : 0;
+        int mri = jCheckBox8.isSelected() ? 1 : 0;
+        int urinary = jCheckBox10.isSelected() ? 1 : 0;
+        int stool = jCheckBox11.isSelected() ? 1 : 0;
+        
+     
+        
+        try { 
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "' AND VisitDate='" + date + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            if (rs.next()) {
+                
+                vid = rs.getInt(1);
+
+            }
+            
+            sql = "SELECT * FROM Labs WHERE vid='" + vid + "'";
+            rs = con.createStatement().executeQuery(sql);
+            if(!rs.next()){
+            	sql = "INSERT INTO Labs values("
+                        + "null, "
+                        + "'" + vid + "', "
+                        + "'" + rbc + "', "
+                        + "'" + wbc + "', "
+                        + "'" + liver + "', "
+                        + "'" + renal + "', "
+                        + "'" + electrolyte + "', "
+                        + "'" + xray + "', "
+                        + "'" + tomography + "', "
+                        + "'" + mri + "', "
+                        + "'" + urinary + "', "
+                        + "'" + stool + "')";   
+            	con.createStatement().executeUpdate(sql);            	
+            }
+            else{
+            	sql = "UPDATE Labs SET RedBloodCell='" + rbc 
+            			+ "',WhiteBloodCell='" + wbc
+            			+ "',LiverFunction='" + liver
+            			+ "',RenalFunction='" + renal 
+            			+ "',Electrolyte='" + electrolyte
+            			+ "',XRay='" + xray
+            			+ "',ComputedTomography='" + tomography 
+            			+ "',MRI='" + mri
+            			+ "',UrinaryTest='" + urinary
+            			+ "',StoolTest='" + stool 
+            			+ "' WHERE vid='" + vid + "'";
+            	con.createStatement().executeUpdate(sql);            	
+            }  
+                        
+            rs.close();
+            stmt.close();
+            con.close();
+            
+            JOptionPane.showMessageDialog(null, "Successfully saved orders.", "Laboratory Orders", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch (ClassNotFoundException e) {
+            
+            System.out.println(e.getMessage());
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+            
+        }
+        
         // Opens the Prescriptions screen
         new Prescriptions(patientSSN);
         

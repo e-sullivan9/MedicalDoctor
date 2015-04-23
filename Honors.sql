@@ -1,7 +1,7 @@
-/*
+
 DROP DATABASE honorsmedicaldoctor;
 DROP USER 'HonorsAdmin'@'localhost';
-*/
+
 
 CREATE DATABASE honorsmedicaldoctor;
 
@@ -13,7 +13,7 @@ USE honorsmedicaldoctor;
 
 CREATE TABLE users (Username varchar(50) NOT NULL, 
 					Password varchar(50) NOT NULL,
-					Section varchar(50) NOT NULL,
+					Section char(50) NOT NULL,
                     PRIMARY KEY(Username));
                     
 create table Patients (SSN varchar(11) NOT NULL,
@@ -31,14 +31,14 @@ create table Visits(
 VID int AUTO_INCREMENT,
 SSN varchar(11) NOT NULL,
 VisitDate date NOT NULL,
-ChiefComplaint char(100) NOT NULL,
-PresentIllness char(100) NOT NULL,
-PastHistory char(100) NOT NULL,
-ReviewOfTheSystem char(100) NOT NULL,
-PhysicalExam char(100) NOT NULL,
-Impression char(100) NOT NULL,
-DiagnosisByDoctor char(100) NOT NULL,
-NursingActivity char(100) NOT NULL,
+ChiefComplaint char(10000) NOT NULL,
+PresentIllness char(10000) NOT NULL,
+PastHistory char(10000) NOT NULL,
+ReviewOfTheSystem char(10000) NOT NULL,
+PhysicalExam char(10000) NOT NULL,
+Impression char(10000) NOT NULL,
+DiagnosisByDoctor char(10000) NOT NULL,
+NursingActivity char(10000) NOT NULL,
 PRIMARY KEY(VID),
 FOREIGN KEY(SSN) REFERENCES Patients(SSN) ON UPDATE CASCADE ON DELETE CASCADE
 );
