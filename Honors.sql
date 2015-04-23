@@ -59,3 +59,14 @@ StoolTest boolean NOT NULL,
 PRIMARY KEY(LabID),
 FOREIGN KEY(VID) REFERENCES Visits(VID) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+create table Prescriptions (
+ScriptID int AUTO_INCREMENT,
+VID int NOT NULL,
+IntramuscularInjection boolean NOT NULL,
+IntravascularInjection boolean NOT NULL,
+SubcutaneousInjection boolean NOT NULL,
+OralMedication varchar(500),
+PRIMARY KEY(ScriptID),
+FOREIGN KEY(VID) REFERENCES Visits(VID) ON UPDATE CASCADE ON DELETE CASCADE
+);
