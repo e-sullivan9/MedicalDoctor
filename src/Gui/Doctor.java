@@ -182,7 +182,13 @@ public class Doctor extends javax.swing.JFrame {
                     sql = "SELECT * FROM Patients WHERE SSN LIKE '" + query + "%'";
                     break;
                 case 1:
-                    String[] temp = query.split(" ");
+                    String[] temp = new String[2];
+                    if (query.indexOf(" ") >= 0) {
+                        temp = query.split(" ");
+                    } else {
+                        temp[0] = "";
+                        temp[1] = "";
+                    }
                     sql = "SELECT * FROM Patients WHERE (FirstName LIKE '" + temp[0] + "%' AND LastName LIKE '"+temp[1]+"%')";
                     break;
                 case 2:
