@@ -22,9 +22,9 @@ create table Patients (SSN varchar(11) NOT NULL,
 					Address char(100) NOT NULL,
 					MedicalInsurance varchar(12) NOT NULL,
 					DOB date NOT NULL,
-					ZIP int(11) NOT NULL,
+					ZIP varchar(11) NOT NULL,
 					Gender char(20) NOT NULL,
-					NextVisit date NOT NULL,
+					NextVisit date,
 					PRIMARY KEY(SSN));
 
 create table Visits(
