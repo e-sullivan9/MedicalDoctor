@@ -27,6 +27,7 @@ public class Login extends JFrame {
         this.usernameTextField.addKeyListener(new KeyListener());
         // Positions the JFrame to the center of the screen
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     /**
@@ -270,6 +271,9 @@ public class Login extends JFrame {
                         NursingSearch nursing = new NursingSearch();
                         
                     }
+                    
+                    // Disposes the login screen
+                    this.dispose();
                
                 // Else if the password entered does not match the password from the ResultSet
                 } else {

@@ -208,10 +208,16 @@ public class Doctor extends javax.swing.JFrame {
 
     // This method is called when the "Select Patient" button is clicked
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	int a = jTable1.getSelectedRow();
-        patientSSN = (String) jTable1.getValueAt(a, 0);
-        // Opens the DoctorGeneralPractice Screen
-        new DoctorGeneralPractice(patientSSN);
+
+   
+            int a = jTable1.getSelectedRow();
+            patientSSN = (String) jTable1.getValueAt(a, 0);
+            // Opens the DoctorGeneralPractice Screen
+            new DoctorGeneralPractice(patientSSN);
+            
+            // Disposes the search screen
+            this.dispose();
+
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
