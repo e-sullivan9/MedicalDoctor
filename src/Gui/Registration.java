@@ -20,7 +20,7 @@ public class Registration extends javax.swing.JFrame {
      */
     public Registration() {
         initComponents();
-        this.addWindowListener(new WindowListener());
+        //this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
         //jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
@@ -50,7 +50,7 @@ public class Registration extends javax.swing.JFrame {
         genderTF.setText(gender);
         followUpTF.setText(next);
         ssnTF.setEditable(false);
-        this.addWindowListener(new WindowListener());
+        //this.addWindowListener(new WindowListener());
         jButton1.addActionListener(new Handler());
         //jButton2.addActionListener(new Handler2());
         jButton3.addActionListener(new Handler2());
@@ -93,7 +93,7 @@ public class Registration extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 50)); // NOI18N
         jLabel1.setText("Registration");
@@ -427,7 +427,7 @@ public class Registration extends javax.swing.JFrame {
             new RegistrationSearch();
         }
    }
-    public class WindowListener extends WindowAdapter {
+    /*public class WindowListener extends WindowAdapter {
         public void windowClosing(WindowEvent e){
             new RegistrationSearch();
         }
@@ -486,11 +486,8 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;

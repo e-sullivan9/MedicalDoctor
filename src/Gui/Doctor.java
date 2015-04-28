@@ -247,13 +247,14 @@ public class Doctor extends javax.swing.JFrame {
 
    
             int a = jTable1.getSelectedRow();
+            if(a!=-1){
             patientSSN = (String) jTable1.getValueAt(a, 0);
             // Opens the DoctorGeneralPractice Screen
             new DoctorGeneralPractice(patientSSN);
             
             // Disposes the search screen
             this.dispose();
-
+            }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 

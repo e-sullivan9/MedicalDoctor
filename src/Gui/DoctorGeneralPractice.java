@@ -215,9 +215,9 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
                 .addGap(98, 98, 98)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -237,7 +237,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,12 +289,12 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -350,7 +350,7 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
             
             stmt.close();
             con.close();
-            
+            if(evt.getSource()==jButton1)
             JOptionPane.showMessageDialog(null, "Succesfully saved general practice.", "General Practice", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (ClassNotFoundException e) {
@@ -397,23 +397,28 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
 
     // This method is called when the Back to Search button is pressed
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    
+
         // Asks the user if they want to save
-        int save = JOptionPane.showConfirmDialog(null, "Would you like to save General Practice?", "Save", JOptionPane.YES_NO_OPTION);
-        
+        int save = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
         // If Yes option pressed
         if (save == JOptionPane.YES_OPTION) {
-            
+
             // Calls the Save General Practice button
             jButton1ActionPerformed(evt);
-            
+            // Opens the DoctorGeneralPractice screen
+            new Doctor();
+
+            // Disposes of this screen
+            this.dispose();
         }
-        
-        // Opens the DoctorGeneralPractice screen
-        new Doctor();
-        
-        // Disposes of this screen
-        this.dispose();
+        if (save == JOptionPane.NO_OPTION) {
+
+            // Opens the DoctorGeneralPractice screen
+            new Doctor();
+
+            // Disposes of this screen
+            this.dispose();
+        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

@@ -196,19 +196,21 @@ public class RegistrationSearch extends javax.swing.JFrame {
             }
             //edit patient button
             if (e.getSource() == jButton3) {
-                try{
-                //pulls the information from the JTable and makes a filled registration window    
-                new Registration((String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 6),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 7),
-                        (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 8)).setVisible(true);
-                dispose();
-                } catch(Exception ex){
-                    
+                if (jTable1.getSelectedRow() != -1) {
+                    try {
+                        //pulls the information from the JTable and makes a filled registration window    
+                        new Registration((String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 6),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 7),
+                                (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 8)).setVisible(true);
+                        dispose();
+                    } catch (Exception ex) {
+                         ex.printStackTrace();
+                    }
                 }
             }
             //search button

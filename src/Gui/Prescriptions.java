@@ -253,12 +253,12 @@ public class Prescriptions extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,7 +307,7 @@ public class Prescriptions extends javax.swing.JFrame {
             rs.close();
             stmt.close();
             con.close();
-            
+            if(evt.getSource()==jButton1)
             JOptionPane.showMessageDialog(null, "Successfully saved Prescriptions.", "Prescriptions", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (ClassNotFoundException e) {
@@ -343,11 +343,22 @@ public class Prescriptions extends javax.swing.JFrame {
     // Called when the Back to Search button is pressed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     
-        // Opens the doctor patient search screen
+                int yn = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (yn == JOptionPane.YES_OPTION) {
+            
+        jButton1ActionPerformed(evt);
         new Doctor();
         
         // Disposes this screen
         this.dispose();
+        }
+        if (yn == JOptionPane.NO_OPTION) {
+            
+        new Doctor();
+        
+        // Disposes this screen
+        this.dispose();
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -355,10 +366,23 @@ public class Prescriptions extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         // Opens the Laboratories screen
+        int yn = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (yn == JOptionPane.YES_OPTION) {
+            
+        jButton1ActionPerformed(evt);
         new Laboratories(patientSSN);
         
         // Disposes this screen
         this.dispose();
+        }
+        if (yn == JOptionPane.NO_OPTION) {
+            
+        new Laboratories(patientSSN);
+        
+        // Disposes this screen
+        this.dispose();
+        }
+        
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

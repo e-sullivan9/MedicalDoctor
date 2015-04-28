@@ -438,13 +438,13 @@ public class Laboratories extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton4)
                     .addComponent(jButton3))
-                .addContainerGap())
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -520,7 +520,7 @@ public class Laboratories extends javax.swing.JFrame {
             rs.close();
             stmt.close();
             con.close();
-            
+            if(evt.getSource()==jButton1)
             JOptionPane.showMessageDialog(null, "Successfully saved orders.", "Laboratory Orders", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (ClassNotFoundException e) {
@@ -628,11 +628,18 @@ public class Laboratories extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         // Opens the doctor's patient search screen
-        new Doctor();
+        int yn = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (yn == JOptionPane.YES_OPTION) {
+            jButton1ActionPerformed(evt);
+            new Doctor();
+            this.dispose();
+        }
+        if (yn == JOptionPane.NO_OPTION) {
+            new Doctor();
+            this.dispose();
+        }
 
         // Disposes this screen
-        this.dispose();
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Called when the logout menu item is pressed
@@ -660,6 +667,8 @@ public class Laboratories extends javax.swing.JFrame {
         int yn = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_CANCEL_OPTION);
         if (yn == JOptionPane.YES_OPTION) {
             jButton1ActionPerformed(evt);
+            new DoctorGeneralPractice(patientSSN);
+            this.dispose();
         }
         if(yn == JOptionPane.NO_OPTION){
         new DoctorGeneralPractice(patientSSN);
