@@ -8,6 +8,7 @@ package Gui;
 import Backend.*;
 
 import java.awt.Color;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -46,6 +47,7 @@ public class Nursing extends javax.swing.JFrame {
    	    	String na = "";
    	    	String nextVisit = "";
    	    	
+   	    	// Get vid of patient
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
             Statement stmt = con.createStatement();
@@ -56,9 +58,11 @@ public class Nursing extends javax.swing.JFrame {
                 vid = rs.getInt(1);
             }   
             
+            // Get Patient's prescriptions
             sql = "SELECT * FROM Prescriptions WHERE VID='" + vid + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
+            	// Check the check boxes if patient needs a prescription
                 po = rs.getString("OralMedication");    
                 if(rs.getInt(3) == 1)
                 	jCheckBox1.setSelected(true);
@@ -67,8 +71,11 @@ public class Nursing extends javax.swing.JFrame {
                 if(rs.getInt(5) == 1)
 	            	jCheckBox3.setSelected(true);            	
             }            
+            // Set the patient's oral medications
             jTextArea1.setText(po);
             
+            // Get boolean values from lab
+            // Check the box in the table if true
             sql = "SELECT * FROM Labs WHERE VID='" + vid + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
@@ -79,6 +86,7 @@ public class Nursing extends javax.swing.JFrame {
             	}
             }
             
+            //Get nursing activity and set the text
             sql = "SELECT * FROM Visits WHERE VID='" + vid + "' AND VisitDate='" + date + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
@@ -86,7 +94,8 @@ public class Nursing extends javax.swing.JFrame {
             }
             jTextArea3.setText(na);
             
-            sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "' AND VisitDate='" + "'";
+            //Get patient's next visit and set the text
+            sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 nextVisit = rs.getDate("NextVisit").toString();
@@ -313,6 +322,11 @@ public class Nursing extends javax.swing.JFrame {
         });
 
         jButton2.setText("Print Order");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Follow-up visit:");
@@ -438,6 +452,7 @@ public class Nursing extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    // Button Listener for "Save Activities"
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         try { 
             
@@ -451,12 +466,15 @@ public class Nursing extends javax.swing.JFrame {
                 vid = rs.getInt(1);
             }
             
+            //Add Nursing Activity into the Visits table
             sql = "UPDATE Visits SET NursingActivity='" + jTextArea3.getText() + "' WHERE vid='" + vid + "'"; 
             stmt.executeUpdate(sql);
             
+            //Follow-Up date must be in the correct format
             if(!jTextField1.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
             	JOptionPane.showMessageDialog(null, "- Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
             }
+            //Update NextVisit
             else{
             	sql = "UPDATE Patients SET NextVisit='" + jTextField1.getText() + "' WHERE SSN='" + patientSSN + "'";
                 stmt.executeUpdate(sql);
@@ -477,7 +495,164 @@ public class Nursing extends javax.swing.JFrame {
             System.out.println(e.getMessage());
             
         }
-    }                                        
+    }      
+    
+    // Button listener for "Print Order"
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    	try{
+    		String lastName = "";
+    		String firstName = "";
+    		String nextVisit = "";
+    		String[] labs = new String[10];
+    		String na = "";
+	    	Class.forName("com.mysql.jdbc.Driver");
+	        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
+	        Statement stmt = con.createStatement();
+	        String sql = "SELECT * FROM Visits WHERE SSN='" + patientSSN + "'";
+	        ResultSet rs = stmt.executeQuery(sql);
+	        
+	        // Get vid of patient
+	        if (rs.next()) {                
+                vid = rs.getInt(1);
+                na = rs.getString("NursingActivity");
+            }
+	        
+	        //Get patient's first name, last name, and next visit date
+	        sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "'";
+	        rs = stmt.executeQuery(sql);	    
+	        if (rs.next()) {     
+	        	lastName = rs.getString(2);
+	        	firstName = rs.getString(3);
+	        	nextVisit = rs.getString("NextVisit");
+            }
+	        
+	        // Get Boolean value from labs
+	        // Store a "Yes" or a "No" into a String array 
+	        sql = "SELECT * FROM Labs WHERE VID='" + vid + "'";
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+            	for(int i = 3; i < 13; i++){
+            		if(rs.getInt(i) == 1){
+            			labs[i - 3] = "Yes";
+            		}
+            		else
+            			labs[i - 3] = "No";
+            	}
+            }
+	        
+	        sql = "SELECT * FROM Prescriptions WHERE vid='" + vid + "'";
+	        rs = stmt.executeQuery(sql);
+            
+	        if(rs.next()){
+	        	// Create the Prescriptions directory
+	        	// Create the text file for the order
+	        	new File("\\Prescriptions").mkdir();
+	        	File file = new File("C:\\Prescriptions\\" + lastName + " " + firstName + " Prescriptions " + date + ".txt");
+	        	if (!file.exists()){
+	                file.createNewFile();
+	            } 
+	        	// Write to the text file everything on the nursing screen
+		    	FileWriter fw = new FileWriter(file);
+		        BufferedWriter bw = new BufferedWriter(fw);
+		        int script1 = rs.getInt(3);
+		        int script2 = rs.getInt(4);
+		        int script3 = rs.getInt(5);
+		        String po = rs.getString(6);
+		        if(script1 == 1){
+		        	 bw.write("Intramuscular Injection:	Yes"); 
+		        	 bw.newLine();
+		        }
+		        else{
+		        	 bw.write("Intramuscular Injection:	No"); 
+		        	 bw.newLine();
+		        }
+		        if(script2 == 1){
+		        	 bw.write("Intravascular Injection:	Yes"); 
+		        	 bw.newLine();
+		        }
+		        else{
+		        	bw.write("Intravascular Injection:	No"); 
+		        	bw.newLine();
+		        }
+		        if(script3 == 1){
+		        	 bw.write("Subcutaneous Injection:	Yes"); 
+		        	 bw.newLine();
+		        }
+		        else{
+		        	bw.write("Subcutaneous Injection:	No"); 
+		        	bw.newLine();
+		        }
+		        
+		        bw.newLine();
+		        bw.write("Oral Medication:");
+		        bw.newLine();
+		        bw.write(po);
+		        bw.newLine();
+
+		        bw.newLine();
+		        bw.write("Labs:");
+		        bw.newLine();
+		        bw.write("Red Blood Cell:		" + labs[0]);
+		        bw.newLine();
+		        bw.write("White Blood Cell:		" + labs[1]);
+		        bw.newLine();
+		        bw.write("Liver Function:		" + labs[2]);
+		        bw.newLine();
+		        bw.write("Renal Function:		" + labs[3]);
+		        bw.newLine();
+		        bw.write("Electrolyte:		" + labs[4]);
+		        bw.newLine();
+		        bw.write("X-Ray:			" + labs[5]);
+		        bw.newLine();
+		        bw.write("Computed Tomography:	" + labs[6]);
+		        bw.newLine();
+		        bw.write("MRI:			" + labs[7]);
+		        bw.newLine();
+		        bw.write("Urinary Test:		" + labs[8]);
+		        bw.newLine();
+		        bw.write("Stool Test:		" + labs[9]);
+		        bw.newLine();
+		        
+		        bw.newLine();
+		        bw.write("Nursing Activity:");
+		        bw.newLine();
+		        bw.write(na);
+		        bw.newLine();
+		        
+		        bw.newLine();
+		        bw.write("Follow-Up Date:");
+		        bw.newLine();
+		        bw.write(nextVisit);
+		        bw.newLine();
+		       
+		        bw.close();
+		        
+		        // Text file is created
+		        // User can choose to open the text file right away
+		        int n = JOptionPane.showConfirmDialog(null, "Prescription for " + lastName + ", " + firstName + " created in " + file + 
+		        		"\nWould you like to open the file now?", "Prescriptions", JOptionPane.YES_NO_OPTION);
+		        if(n == JOptionPane.YES_OPTION){
+			        Runtime rt = Runtime.getRuntime();
+			        Process p = rt.exec("notepad " + file);
+		        }
+	        }
+    	}
+	    catch (ClassNotFoundException e) {
+	        
+	        System.out.println(e.getMessage());
+	        
+	    } 
+    	catch (SQLException e) {
+	      
+	        System.out.println(e.getMessage());
+	        
+	    }
+    	catch (IOException e) {
+  	      
+	        System.out.println(e.getMessage());
+	        
+	    }
+    }
 
     /**
      * @param args the command line arguments
