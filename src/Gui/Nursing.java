@@ -334,7 +334,13 @@ public class Nursing extends javax.swing.JFrame {
         jButton3.setText("Back to Search");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                int yn = JOptionPane.showConfirmDialog(null, "Would you like to save activities?", "Save", JOptionPane.YES_NO_OPTION);
+                if (yn == JOptionPane.YES_OPTION){
+                	jButton1ActionPerformed(evt);
+                    jButton3ActionPerformed(evt);
+                }
+                else
+                    jButton3ActionPerformed(evt);
             }
         });
 
@@ -472,7 +478,7 @@ public class Nursing extends javax.swing.JFrame {
             
             //Follow-Up date must be in the correct format
             if(!jTextField1.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
-            	JOptionPane.showMessageDialog(null, "- Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
+            	JOptionPane.showMessageDialog(null, "Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
             }
             //Update NextVisit
             else{
@@ -500,10 +506,14 @@ public class Nursing extends javax.swing.JFrame {
     // Button listener for "Print Order"
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
     	try{
+    		int script1 = 0;
+    		int script2 = 0;
+    		int script3 = 0;
     		String lastName = "";
     		String firstName = "";
     		String nextVisit = "";
-    		String[] labs = new String[10];
+    		String po = "";
+    		String[] labs = {"No","No","No","No","No","No","No","No","No","No"};
     		String na = "";
 	    	Class.forName("com.mysql.jdbc.Driver");
 	        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/honorsmedicaldoctor", "HonorsAdmin", "h0n3r5a2m1n");
@@ -543,98 +553,99 @@ public class Nursing extends javax.swing.JFrame {
 	        sql = "SELECT * FROM Prescriptions WHERE vid='" + vid + "'";
 	        rs = stmt.executeQuery(sql);
             
-	        if(rs.next()){
-	        	// Create the Prescriptions directory
-	        	// Create the text file for the order
-	        	new File("\\Prescriptions").mkdir();
-	        	File file = new File("C:\\Prescriptions\\" + lastName + " " + firstName + " Prescriptions " + date + ".txt");
-	        	if (!file.exists()){
-	                file.createNewFile();
-	            } 
-	        	// Write to the text file everything on the nursing screen
-		    	FileWriter fw = new FileWriter(file);
-		        BufferedWriter bw = new BufferedWriter(fw);
-		        int script1 = rs.getInt(3);
-		        int script2 = rs.getInt(4);
-		        int script3 = rs.getInt(5);
-		        String po = rs.getString(6);
-		        if(script1 == 1){
-		        	 bw.write("Intramuscular Injection:	Yes"); 
-		        	 bw.newLine();
-		        }
-		        else{
-		        	 bw.write("Intramuscular Injection:	No"); 
-		        	 bw.newLine();
-		        }
-		        if(script2 == 1){
-		        	 bw.write("Intravascular Injection:	Yes"); 
-		        	 bw.newLine();
-		        }
-		        else{
-		        	bw.write("Intravascular Injection:	No"); 
-		        	bw.newLine();
-		        }
-		        if(script3 == 1){
-		        	 bw.write("Subcutaneous Injection:	Yes"); 
-		        	 bw.newLine();
-		        }
-		        else{
-		        	bw.write("Subcutaneous Injection:	No"); 
-		        	bw.newLine();
-		        }
-		        
-		        bw.newLine();
-		        bw.write("Oral Medication:");
-		        bw.newLine();
-		        bw.write(po);
-		        bw.newLine();
+	        if(rs.next()){	        	
+		        script1 = rs.getInt(3);
+		        script2 = rs.getInt(4);
+		        script3 = rs.getInt(5);
+		        po = rs.getString(6);		       
+		    }	        
+	        // Create the Prescriptions directory
+        	// Create the text file for the order
+        	new File("\\Prescriptions").mkdir();
+        	File file = new File("C:\\Prescriptions\\" + lastName + ", " + firstName + " Prescriptions " + date + ".txt");
+        	if (!file.exists()){
+                file.createNewFile();
+            } 
+        	// Write to the text file everything on the nursing screen
+	    	FileWriter fw = new FileWriter(file);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        
+	        if(script1 == 1){
+	        	 bw.write("Intramuscular Injection:	Yes"); 
+	        	 bw.newLine();
+	        }
+	        else{
+	        	 bw.write("Intramuscular Injection:	No"); 
+	        	 bw.newLine();
+	        }
+	        if(script2 == 1){
+	        	 bw.write("Intravascular Injection:	Yes"); 
+	        	 bw.newLine();
+	        }
+	        else{
+	        	bw.write("Intravascular Injection:	No"); 
+	        	bw.newLine();
+	        }
+	        if(script3 == 1){
+	        	 bw.write("Subcutaneous Injection:		Yes"); 
+	        	 bw.newLine();
+	        }
+	        else{
+	        	bw.write("Subcutaneous Injection:		No"); 
+	        	bw.newLine();
+	        }
+	        
+	        bw.newLine();
+	        bw.write("Oral Medication:");
+	        bw.newLine();
+	        bw.write(po);
+	        bw.newLine();
 
-		        bw.newLine();
-		        bw.write("Labs:");
-		        bw.newLine();
-		        bw.write("Red Blood Cell:		" + labs[0]);
-		        bw.newLine();
-		        bw.write("White Blood Cell:		" + labs[1]);
-		        bw.newLine();
-		        bw.write("Liver Function:		" + labs[2]);
-		        bw.newLine();
-		        bw.write("Renal Function:		" + labs[3]);
-		        bw.newLine();
-		        bw.write("Electrolyte:		" + labs[4]);
-		        bw.newLine();
-		        bw.write("X-Ray:			" + labs[5]);
-		        bw.newLine();
-		        bw.write("Computed Tomography:	" + labs[6]);
-		        bw.newLine();
-		        bw.write("MRI:			" + labs[7]);
-		        bw.newLine();
-		        bw.write("Urinary Test:		" + labs[8]);
-		        bw.newLine();
-		        bw.write("Stool Test:		" + labs[9]);
-		        bw.newLine();
-		        
-		        bw.newLine();
-		        bw.write("Nursing Activity:");
-		        bw.newLine();
-		        bw.write(na);
-		        bw.newLine();
-		        
-		        bw.newLine();
-		        bw.write("Follow-Up Date:");
-		        bw.newLine();
-		        bw.write(nextVisit);
-		        bw.newLine();
-		       
-		        bw.close();
-		        
-		        // Text file is created
-		        // User can choose to open the text file right away
-		        int n = JOptionPane.showConfirmDialog(null, "Prescription for " + lastName + ", " + firstName + " created in " + file + 
-		        		"\nWould you like to open the file now?", "Prescriptions", JOptionPane.YES_NO_OPTION);
-		        if(n == JOptionPane.YES_OPTION){
-			        Runtime rt = Runtime.getRuntime();
-			        Process p = rt.exec("notepad " + file);
-		        }
+	        bw.newLine();
+	        bw.write("Labs:");
+	        bw.newLine();
+	        bw.write("Red Blood Cell:			" + labs[0]);
+	        bw.newLine();
+	        bw.write("White Blood Cell:		" + labs[1]);
+	        bw.newLine();
+	        bw.write("Liver Function:			" + labs[2]);
+	        bw.newLine();
+	        bw.write("Renal Function:			" + labs[3]);
+	        bw.newLine();
+	        bw.write("Electrolyte:			" + labs[4]);
+	        bw.newLine();
+	        bw.write("X-Ray:				" + labs[5]);
+	        bw.newLine();
+	        bw.write("Computed Tomography:		" + labs[6]);
+	        bw.newLine();
+	        bw.write("MRI:				" + labs[7]);
+	        bw.newLine();
+	        bw.write("Urinary Test:			" + labs[8]);
+	        bw.newLine();
+	        bw.write("Stool Test:			" + labs[9]);
+	        bw.newLine();
+	        
+	        bw.newLine();
+	        bw.write("Nursing Activity:");
+	        bw.newLine();
+	        bw.write(na);
+	        bw.newLine();
+	        
+	        bw.newLine();
+	        bw.write("Follow-Up Date:");
+	        bw.newLine();
+	        bw.write(nextVisit);
+	        bw.newLine();
+	       
+	        bw.close();
+	        
+	        // Text file is created
+	        // User can choose to open the text file right away
+	        int n = JOptionPane.showConfirmDialog(null, "Prescription for " + lastName + ", " + firstName + " created in " + file + 
+	        		"\nWould you like to open the file now?", "Prescriptions", JOptionPane.YES_NO_OPTION);
+	        if(n == JOptionPane.YES_OPTION){
+		        Runtime rt = Runtime.getRuntime();
+		        Process p = rt.exec("notepad " + file);
 	        }
     	}
 	    catch (ClassNotFoundException e) {
