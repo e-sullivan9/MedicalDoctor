@@ -397,6 +397,17 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
     // This method is called when the Back to Search button is pressed
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     
+        // Asks the user if they want to save
+        int save = JOptionPane.showConfirmDialog(null, "Would you like to save General Practice?", "Save", JOptionPane.YES_NO_OPTION);
+        
+        // If Yes option pressed
+        if (save == JOptionPane.YES_OPTION) {
+            
+            // Calls the Save General Practice button
+            jButton1ActionPerformed(evt);
+            
+        }
+        
         // Opens the DoctorGeneralPractice screen
         new Doctor();
         
