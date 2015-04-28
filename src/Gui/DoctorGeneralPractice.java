@@ -369,8 +369,9 @@ public class DoctorGeneralPractice extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
         // Opens the Laboratories screen
-        new Laboratories(patientSSN);
         jButton1ActionPerformed(evt);
+        new Laboratories(patientSSN);
+        
         this.dispose();
         
     }//GEN-LAST:event_jButton2ActionPerformed
