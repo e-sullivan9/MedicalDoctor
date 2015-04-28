@@ -46,6 +46,7 @@ public class Nursing extends javax.swing.JFrame {
    	    	String po = "";
    	    	String na = "";
    	    	String nextVisit = "";
+   	    	String labNotes = "";
    	    	
    	    	// Get vid of patient
             Class.forName("com.mysql.jdbc.Driver");
@@ -79,12 +80,14 @@ public class Nursing extends javax.swing.JFrame {
             sql = "SELECT * FROM Labs WHERE VID='" + vid + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
+            	labNotes = rs.getString("LabNotes");
             	for(int i = 3; i < 13; i++){
             		if(rs.getInt(i) == 1){
             			jTable1.setValueAt(true,i - 3,1);
             		}
             	}
             }
+            laboratorynotesTextArea.setText(labNotes);
             
             //Get nursing activity and set the text
             sql = "SELECT * FROM Visits WHERE VID='" + vid + "' AND VisitDate='" + date + "'";
@@ -98,7 +101,9 @@ public class Nursing extends javax.swing.JFrame {
             sql = "SELECT * FROM Patients WHERE SSN='" + patientSSN + "'";
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                nextVisit = rs.getDate("NextVisit").toString();
+            	// if NextVisit is not null, nextVisit = NextVisit
+            	if(rs.getDate("NextVisit") != null)
+            		nextVisit = rs.getDate("NextVisit").toString();
             }
             jTextField1.setText(nextVisit);
 
@@ -222,6 +227,7 @@ public class Nursing extends javax.swing.JFrame {
         jLabel7.setText("P.O (Per Os; Oral medication)");
 
         jTextArea1.setEditable(false);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -298,6 +304,7 @@ public class Nursing extends javax.swing.JFrame {
 
         jTextArea3.setColumns(20);
         jTextArea3.setRows(5);
+        jTextArea3.setLineWrap(true);
         jScrollPane3.setViewportView(jTextArea3);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -340,6 +347,8 @@ public class Nursing extends javax.swing.JFrame {
 
         laboratorynotesTextArea.setColumns(20);
         laboratorynotesTextArea.setRows(5);
+        laboratorynotesTextArea.setLineWrap(true);
+        laboratorynotesTextArea.setEditable(false);
         jScrollPane6.setViewportView(laboratorynotesTextArea);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -472,11 +481,22 @@ public class Nursing extends javax.swing.JFrame {
     // Called when the Back to Search button is clicked
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
    
-        // Creates a new nurse patient search screen
-        new NursingSearch();
-        
-        // Disposes this screen
-        this.dispose();
+    	int save = JOptionPane.showConfirmDialog(null, "Would you like to save your changes", "Save", JOptionPane.YES_NO_OPTION);
+        // If Yes option pressed
+        if (save == JOptionPane.YES_OPTION) {
+            // Calls the Save General Practice button
+            jButton1ActionPerformed(evt);
+            // Creates a new nurse patient search screen
+            new NursingSearch();
+            // Disposes of this screen
+            this.dispose();
+        }
+        if (save == JOptionPane.NO_OPTION) {
+            // Opens the DoctorGeneralPractice screen
+            new NursingSearch();
+            // Disposes of this screen
+            this.dispose();
+        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -498,17 +518,20 @@ public class Nursing extends javax.swing.JFrame {
             sql = "UPDATE Visits SET NursingActivity='" + jTextArea3.getText() + "' WHERE vid='" + vid + "'"; 
             stmt.executeUpdate(sql);
             
-            //Follow-Up date must be in the correct format
-            if(!jTextField1.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
-            	JOptionPane.showMessageDialog(null, "Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
+            if(!jTextField1.getText().equals("")){
+	            //Follow-Up date must be in the correct format
+	            if(!jTextField1.getText().matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")){
+	            	JOptionPane.showMessageDialog(null, "Follow-Up must be YYYY-MM-DD\n", "Check Date Format", JOptionPane.INFORMATION_MESSAGE);
+	            }
+	            //Update NextVisit
+	            else{
+	            	sql = "UPDATE Patients SET NextVisit='" + jTextField1.getText() + "' WHERE SSN='" + patientSSN + "'";
+	                stmt.executeUpdate(sql);
+	            	JOptionPane.showMessageDialog(null, "Successfully saved Activities", "Activities", JOptionPane.INFORMATION_MESSAGE);
+	            }           
             }
-            //Update NextVisit
-            else{
-            	sql = "UPDATE Patients SET NextVisit='" + jTextField1.getText() + "' WHERE SSN='" + patientSSN + "'";
-                stmt.executeUpdate(sql);
+            else
             	JOptionPane.showMessageDialog(null, "Successfully saved Activities", "Activities", JOptionPane.INFORMATION_MESSAGE);
-            }
-
             rs.close();
             stmt.close();
             con.close();
