@@ -1,7 +1,7 @@
+DROP DATABASE IF EXISTS honorsmedicaldoctor;
 
-DROP DATABASE honorsmedicaldoctor;
+GRANT USAGE ON *.* TO 'HonorsAdmin'@'localhost' IDENTIFIED BY 'h0n3r5a2m1n';
 DROP USER 'HonorsAdmin'@'localhost';
-
 
 CREATE DATABASE honorsmedicaldoctor;
 
